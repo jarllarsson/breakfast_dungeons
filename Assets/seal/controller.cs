@@ -127,14 +127,18 @@ public class controller : MonoBehaviour {
     {
         //if (calibrationTime<0.0f)
         {
-            Vector2 dirInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+            Vector2 dirInput = Vector2.zero;
+#if (!UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID))
             Vector2 tilt = new Vector2(Input.acceleration.x, Input.acceleration.y/* - startY*/);
             tilt.x *= Mathf.Clamp(m_tiltMultiplier.x * tilt.magnitude, 1.0f, m_tiltMultiplier.x);
             tilt.y *= Mathf.Clamp(m_tiltMultiplier.y * tilt.magnitude, 1.0f, m_tiltMultiplier.y);
             tilt.x = Mathf.Clamp(tilt.x, -m_tiltMax.x, m_tiltMax.y);
             tilt.y = Mathf.Clamp(tilt.y, -m_tiltMax.y, m_tiltMax.y);
             Debug.Log(tilt);
-            dirInput += tilt;
+            dirInput = tilt;
+#else
+            dirInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+#endif
             Debug.DrawLine(transform.position, transform.position + new Vector3(dirInput.x, dirInput.y, 0.0f), Color.white);
             float dirInputSqrMagnitude = dirInput.sqrMagnitude;
             rigidbody2D.AddForce(dirInput * m_movePower);
