@@ -128,7 +128,7 @@ public class controller : MonoBehaviour {
         //if (calibrationTime<0.0f)
         {
             Vector2 dirInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-            Vector2 tilt = new Vector2(Input.acceleration.x, Input.acceleration.y - startY);
+            Vector2 tilt = new Vector2(Input.acceleration.x, Input.acceleration.y/* - startY*/);
             tilt.x *= Mathf.Clamp(m_tiltMultiplier.x * tilt.magnitude, 1.0f, m_tiltMultiplier.x);
             tilt.y *= Mathf.Clamp(m_tiltMultiplier.y * tilt.magnitude, 1.0f, m_tiltMultiplier.y);
             tilt.x = Mathf.Clamp(tilt.x, -m_tiltMax.x, m_tiltMax.y);

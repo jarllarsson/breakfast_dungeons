@@ -983,8 +983,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_movePower: 500
-  m_tiltMultiplier: {x: 20, y: 22}
-  m_tiltMax: {x: 1.79999995, y: 2}
+  m_tiltMultiplier: {x: 30, y: 32}
+  m_tiltMax: {x: 1.20000005, y: 1.5}
   m_lineRenderer: {fileID: 1305926758}
   m_spring: {fileID: 1305926751}
   m_face: {fileID: 1268385707}
