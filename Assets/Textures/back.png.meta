@@ -1,0 +1,107 @@
+fileFormatVersion: 2
+guid: 0bf79dfb53d58eb4290240d20e187b1b
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: back
+    21300002: back_0
+    21300004: back_1
+    21300006: back_2
+    21300008: back_3
+    21300010: back_4
+    21300012: back_5
+    21300014: back_6
+    21300016: back_7
+    21300018: back_8
+    21300020: back_9
+    21300022: back_10
+    21300024: back_11
+    21300026: back_12
+    21300028: back_13
+    21300030: back_14
+    21300032: back_15
+    21300034: back_16
+    21300036: back_17
+    21300038: back_18
+    21300040: back_19
+    21300042: back_20
+    21300044: back_21
+    21300046: back_22
+    21300048: back_23
+    21300050: back_24
+    21300052: back_25
+    21300054: back_26
+    21300056: back_27
+    21300058: back_28
+    21300060: back_29
+    21300062: back_30
+    21300064: back_31
+    21300066: back_32
+    21300068: back_33
+    21300070: back_34
+    21300072: back_35
+    21300074: back_36
+    21300076: back_37
+    21300078: back_38
+    21300080: back_39
+    21300082: back_40
+    21300084: back_41
+    21300086: back_42
+    21300088: back_43
+    21300090: back_44
+    21300092: back_45
+    21300094: back_46
+    21300096: back_47
+    21300098: back_48
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 15
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: back_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 896
+        height: 768
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

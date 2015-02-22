@@ -1,0 +1,113 @@
+fileFormatVersion: 2
+guid: 0d743f967fa6af746bb5e56fe45106d6
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: batterydude_0
+    21300002: batterydude_1
+    21300004: batterydude_2
+    21300006: batterydude_3
+    21300008: batterydude_4
+    21300010: batterydude_5
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: 0
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 15
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: batterydude_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 10
+        width: 10
+        height: 4
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: batterydude_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 3
+        width: 4
+        height: 7
+      alignment: 7
+      pivot: {x: .5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: batterydude_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 9
+        width: 1
+        height: 2
+      alignment: 9
+      pivot: {x: .529335737, y: .874037743}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: batterydude_3
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 3
+        width: 2
+        height: 2
+      alignment: 9
+      pivot: {x: .235973239, y: .874037504}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: batterydude_4
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 1
+        width: 2
+        height: 2
+      alignment: 9
+      pivot: {x: .246974349, y: .973048091}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: batterydude_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7
+        width: 1
+        height: 2
+      alignment: 2
+      pivot: {x: .5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
