@@ -181,6 +181,7 @@ GameObject:
   - 114: {fileID: 80273759}
   - 50: {fileID: 80273758}
   - 58: {fileID: 80273757}
+  - 82: {fileID: 80273761}
   m_Layer: 0
   m_Name: lumberjack
   m_TagString: Untagged
@@ -207,8 +208,8 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 1364273024}
   m_GameObject: {fileID: 80273756}
-  m_Mass: 5
-  m_LinearDrag: 1
+  m_Mass: 20
+  m_LinearDrag: 5
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -228,7 +229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df533b7c1fbee8241aed520ecf612b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 200
   m_move: 1
   m_dirFlipObj: {fileID: 923563977}
   m_velocityOnBallToKillMe: 10
@@ -250,6 +251,14 @@ MonoBehaviour:
   m_burnParticle: {fileID: 0}
   m_velocityAffectOnAnimSpd: .400000006
   m_animSpdMax: 2
+  m_soundSource: {fileID: 80273761}
+  m_hitSounds:
+  - {fileID: 8300000, guid: 8bdc16525e4430f4985c7d2fb9951671, type: 3}
+  - {fileID: 8300000, guid: 6ad3bcf1e46bb054a88e3fe2035d5dbb, type: 3}
+  - {fileID: 8300000, guid: 775ef041e1293be498bf88eb7d788d7b, type: 3}
+  - {fileID: 8300000, guid: 6d983ce4307942249a0b8eaa1da6a450, type: 3}
+  - {fileID: 8300000, guid: 6cd090c1b4218834484e88ad1691c1bc, type: 3}
+  m_hitSparks: {fileID: 100000, guid: b7eaf2d52f1590541afcbc358923aacf, type: 2}
 --- !u!4 &80273760
 Transform:
   m_ObjectHideFlags: 0
@@ -263,6 +272,65 @@ Transform:
   - {fileID: 923563977}
   m_Father: {fileID: 0}
   m_RootOrder: 18
+--- !u!82 &80273761
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8200000, guid: 4ad211f9ee8699c45a2881289c37e15d,
+    type: 2}
+  m_PrefabInternal: {fileID: 1364273024}
+  m_GameObject: {fileID: 80273756}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1001 &186580340
 Prefab:
   m_ObjectHideFlags: 0
@@ -434,6 +502,7 @@ GameObject:
   - 114: {fileID: 248963990}
   - 50: {fileID: 248963989}
   - 58: {fileID: 248963988}
+  - 82: {fileID: 248963991}
   m_Layer: 0
   m_Name: lumberjack
   m_TagString: Untagged
@@ -473,8 +542,8 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 418485615}
   m_GameObject: {fileID: 248963986}
-  m_Mass: 5
-  m_LinearDrag: 1
+  m_Mass: 20
+  m_LinearDrag: 5
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -494,7 +563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df533b7c1fbee8241aed520ecf612b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 200
   m_move: 1
   m_dirFlipObj: {fileID: 1467781501}
   m_velocityOnBallToKillMe: 10
@@ -516,6 +585,73 @@ MonoBehaviour:
   m_burnParticle: {fileID: 0}
   m_velocityAffectOnAnimSpd: .400000006
   m_animSpdMax: 2
+  m_soundSource: {fileID: 248963991}
+  m_hitSounds:
+  - {fileID: 8300000, guid: 8bdc16525e4430f4985c7d2fb9951671, type: 3}
+  - {fileID: 8300000, guid: 6ad3bcf1e46bb054a88e3fe2035d5dbb, type: 3}
+  - {fileID: 8300000, guid: 775ef041e1293be498bf88eb7d788d7b, type: 3}
+  - {fileID: 8300000, guid: 6d983ce4307942249a0b8eaa1da6a450, type: 3}
+  - {fileID: 8300000, guid: 6cd090c1b4218834484e88ad1691c1bc, type: 3}
+  m_hitSparks: {fileID: 100000, guid: b7eaf2d52f1590541afcbc358923aacf, type: 2}
+--- !u!82 &248963991
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8200000, guid: 4ad211f9ee8699c45a2881289c37e15d,
+    type: 2}
+  m_PrefabInternal: {fileID: 418485615}
+  m_GameObject: {fileID: 248963986}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &390399612
 GameObject:
   m_ObjectHideFlags: 0
@@ -695,6 +831,7 @@ GameObject:
   - 58: {fileID: 508120938}
   - 50: {fileID: 508120937}
   - 114: {fileID: 508120942}
+  - 96: {fileID: 508120943}
   m_Layer: 9
   m_Name: Ball
   m_TagString: ball
@@ -766,7 +903,7 @@ Transform:
   m_PrefabInternal: {fileID: 647929725}
   m_GameObject: {fileID: 508120936}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -48.3930016, y: 30.0240002, z: 0}
+  m_LocalPosition: {x: -34.9129982, y: 31.8850002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1944804989}
@@ -788,6 +925,48 @@ MonoBehaviour:
   m_ball: {fileID: 1944804989}
   m_points: {fileID: 2042198409}
   m_smoothVelocity: 0
+  m_trail: {fileID: 508120943}
+--- !u!96 &508120943
+TrailRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 508120936}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_LightmapIndex: 255
+  m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
+  m_Materials:
+  - {fileID: 2100000, guid: d310db005f054944a99c2d9018b6177f, type: 2}
+  m_SubsetIndices: 
+  m_StaticBatchRoot: {fileID: 0}
+  m_UseLightProbes: 0
+  m_LightProbeAnchor: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_Time: .5
+  m_StartWidth: 2.41000009
+  m_EndWidth: 2.41000009
+  m_Colors:
+    m_Color[0]:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_Color[1]:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_Color[2]:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_Color[3]:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_Color[4]:
+      serializedVersion: 2
+      rgba: 16777215
+  m_MinVertexDistance: .300000012
+  m_Autodestruct: 0
 --- !u!1 &512989272
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,7 +1044,7 @@ GameObject:
   - 114: {fileID: 553347574}
   m_Layer: 0
   m_Name: CamShaker
-  m_TagString: Untagged
+  m_TagString: camshaker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1027,11 +1206,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 9a7f8d0734a6ada44865215a8f513281, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -48.3930016
+      value: -34.9129982
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9a7f8d0734a6ada44865215a8f513281, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 30.0240002
+      value: 31.8850002
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 9a7f8d0734a6ada44865215a8f513281, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1057,6 +1236,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 9a7f8d0734a6ada44865215a8f513281, type: 2}
+      propertyPath: m_trail
+      value: 
+      objectReference: {fileID: 508120943}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9a7f8d0734a6ada44865215a8f513281, type: 2}
   m_RootGameObject: {fileID: 508120936}
@@ -1337,6 +1520,7 @@ GameObject:
   - 114: {fileID: 805847414}
   - 50: {fileID: 805847413}
   - 58: {fileID: 805847412}
+  - 82: {fileID: 805847415}
   m_Layer: 0
   m_Name: lumberjack
   m_TagString: Untagged
@@ -1376,8 +1560,8 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 1093845141}
   m_GameObject: {fileID: 805847410}
-  m_Mass: 5
-  m_LinearDrag: 1
+  m_Mass: 20
+  m_LinearDrag: 5
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -1397,7 +1581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df533b7c1fbee8241aed520ecf612b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 200
   m_move: 1
   m_dirFlipObj: {fileID: 16065803}
   m_velocityOnBallToKillMe: 10
@@ -1419,6 +1603,73 @@ MonoBehaviour:
   m_burnParticle: {fileID: 0}
   m_velocityAffectOnAnimSpd: .400000006
   m_animSpdMax: 2
+  m_soundSource: {fileID: 805847415}
+  m_hitSounds:
+  - {fileID: 8300000, guid: 8bdc16525e4430f4985c7d2fb9951671, type: 3}
+  - {fileID: 8300000, guid: 6ad3bcf1e46bb054a88e3fe2035d5dbb, type: 3}
+  - {fileID: 8300000, guid: 775ef041e1293be498bf88eb7d788d7b, type: 3}
+  - {fileID: 8300000, guid: 6d983ce4307942249a0b8eaa1da6a450, type: 3}
+  - {fileID: 8300000, guid: 6cd090c1b4218834484e88ad1691c1bc, type: 3}
+  m_hitSparks: {fileID: 100000, guid: b7eaf2d52f1590541afcbc358923aacf, type: 2}
+--- !u!82 &805847415
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8200000, guid: 4ad211f9ee8699c45a2881289c37e15d,
+    type: 2}
+  m_PrefabInternal: {fileID: 1093845141}
+  m_GameObject: {fileID: 805847410}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &850843221
 GameObject:
   m_ObjectHideFlags: 0
@@ -1501,6 +1752,7 @@ GameObject:
   - 114: {fileID: 910305552}
   - 50: {fileID: 910305551}
   - 58: {fileID: 910305550}
+  - 82: {fileID: 910305553}
   m_Layer: 0
   m_Name: lumberjack
   m_TagString: Untagged
@@ -1540,8 +1792,8 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 601257151}
   m_GameObject: {fileID: 910305548}
-  m_Mass: 5
-  m_LinearDrag: 1
+  m_Mass: 20
+  m_LinearDrag: 5
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -1561,7 +1813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df533b7c1fbee8241aed520ecf612b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 200
   m_move: 1
   m_dirFlipObj: {fileID: 629181089}
   m_velocityOnBallToKillMe: 10
@@ -1583,6 +1835,73 @@ MonoBehaviour:
   m_burnParticle: {fileID: 0}
   m_velocityAffectOnAnimSpd: .400000006
   m_animSpdMax: 2
+  m_soundSource: {fileID: 910305553}
+  m_hitSounds:
+  - {fileID: 8300000, guid: 8bdc16525e4430f4985c7d2fb9951671, type: 3}
+  - {fileID: 8300000, guid: 6ad3bcf1e46bb054a88e3fe2035d5dbb, type: 3}
+  - {fileID: 8300000, guid: 775ef041e1293be498bf88eb7d788d7b, type: 3}
+  - {fileID: 8300000, guid: 6d983ce4307942249a0b8eaa1da6a450, type: 3}
+  - {fileID: 8300000, guid: 6cd090c1b4218834484e88ad1691c1bc, type: 3}
+  m_hitSparks: {fileID: 100000, guid: b7eaf2d52f1590541afcbc358923aacf, type: 2}
+--- !u!82 &910305553
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8200000, guid: 4ad211f9ee8699c45a2881289c37e15d,
+    type: 2}
+  m_PrefabInternal: {fileID: 601257151}
+  m_GameObject: {fileID: 910305548}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &923563976
 GameObject:
   m_ObjectHideFlags: 0
@@ -2359,6 +2678,7 @@ GameObject:
   - 114: {fileID: 1525483830}
   - 50: {fileID: 1525483829}
   - 58: {fileID: 1525483832}
+  - 82: {fileID: 1525483833}
   m_Layer: 0
   m_Name: lumberjack
   m_TagString: Untagged
@@ -2373,8 +2693,8 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 561974440}
   m_GameObject: {fileID: 1525483828}
-  m_Mass: 5
-  m_LinearDrag: 1
+  m_Mass: 20
+  m_LinearDrag: 5
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -2394,7 +2714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df533b7c1fbee8241aed520ecf612b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 200
   m_move: 1
   m_dirFlipObj: {fileID: 1951067118}
   m_velocityOnBallToKillMe: 10
@@ -2416,6 +2736,14 @@ MonoBehaviour:
   m_burnParticle: {fileID: 0}
   m_velocityAffectOnAnimSpd: .400000006
   m_animSpdMax: 2
+  m_soundSource: {fileID: 1525483833}
+  m_hitSounds:
+  - {fileID: 8300000, guid: 8bdc16525e4430f4985c7d2fb9951671, type: 3}
+  - {fileID: 8300000, guid: 6ad3bcf1e46bb054a88e3fe2035d5dbb, type: 3}
+  - {fileID: 8300000, guid: 775ef041e1293be498bf88eb7d788d7b, type: 3}
+  - {fileID: 8300000, guid: 6d983ce4307942249a0b8eaa1da6a450, type: 3}
+  - {fileID: 8300000, guid: 6cd090c1b4218834484e88ad1691c1bc, type: 3}
+  m_hitSparks: {fileID: 100000, guid: b7eaf2d52f1590541afcbc358923aacf, type: 2}
 --- !u!4 &1525483831
 Transform:
   m_ObjectHideFlags: 0
@@ -2441,6 +2769,65 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_Radius: 1.53999996
   m_Center: {x: 0, y: .980000019}
+--- !u!82 &1525483833
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8200000, guid: 4ad211f9ee8699c45a2881289c37e15d,
+    type: 2}
+  m_PrefabInternal: {fileID: 561974440}
+  m_GameObject: {fileID: 1525483828}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &1535166672
 GameObject:
   m_ObjectHideFlags: 0
@@ -2452,6 +2839,7 @@ GameObject:
   - 114: {fileID: 1535166675}
   - 50: {fileID: 1535166674}
   - 58: {fileID: 1535166673}
+  - 82: {fileID: 1535166677}
   m_Layer: 0
   m_Name: lumberjack
   m_TagString: Untagged
@@ -2478,8 +2866,8 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 769168771}
   m_GameObject: {fileID: 1535166672}
-  m_Mass: 5
-  m_LinearDrag: 1
+  m_Mass: 20
+  m_LinearDrag: 5
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -2499,7 +2887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df533b7c1fbee8241aed520ecf612b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 200
   m_move: 1
   m_dirFlipObj: {fileID: 2086880071}
   m_velocityOnBallToKillMe: 10
@@ -2521,6 +2909,14 @@ MonoBehaviour:
   m_burnParticle: {fileID: 0}
   m_velocityAffectOnAnimSpd: .400000006
   m_animSpdMax: 2
+  m_soundSource: {fileID: 1535166677}
+  m_hitSounds:
+  - {fileID: 8300000, guid: 8bdc16525e4430f4985c7d2fb9951671, type: 3}
+  - {fileID: 8300000, guid: 6ad3bcf1e46bb054a88e3fe2035d5dbb, type: 3}
+  - {fileID: 8300000, guid: 775ef041e1293be498bf88eb7d788d7b, type: 3}
+  - {fileID: 8300000, guid: 6d983ce4307942249a0b8eaa1da6a450, type: 3}
+  - {fileID: 8300000, guid: 6cd090c1b4218834484e88ad1691c1bc, type: 3}
+  m_hitSparks: {fileID: 100000, guid: b7eaf2d52f1590541afcbc358923aacf, type: 2}
 --- !u!4 &1535166676
 Transform:
   m_ObjectHideFlags: 0
@@ -2534,6 +2930,65 @@ Transform:
   - {fileID: 2086880071}
   m_Father: {fileID: 0}
   m_RootOrder: 14
+--- !u!82 &1535166677
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8200000, guid: 4ad211f9ee8699c45a2881289c37e15d,
+    type: 2}
+  m_PrefabInternal: {fileID: 769168771}
+  m_GameObject: {fileID: 1535166672}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &1563823845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2613,6 +3068,7 @@ GameObject:
   - 114: {fileID: 1600116429}
   - 50: {fileID: 1600116428}
   - 58: {fileID: 1600116427}
+  - 82: {fileID: 1600116431}
   m_Layer: 0
   m_Name: lumberjack
   m_TagString: Untagged
@@ -2639,8 +3095,8 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 186580340}
   m_GameObject: {fileID: 1600116426}
-  m_Mass: 5
-  m_LinearDrag: 1
+  m_Mass: 20
+  m_LinearDrag: 5
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -2660,7 +3116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df533b7c1fbee8241aed520ecf612b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 200
   m_move: 1
   m_dirFlipObj: {fileID: 2099572717}
   m_velocityOnBallToKillMe: 10
@@ -2682,6 +3138,14 @@ MonoBehaviour:
   m_burnParticle: {fileID: 0}
   m_velocityAffectOnAnimSpd: .400000006
   m_animSpdMax: 2
+  m_soundSource: {fileID: 1600116431}
+  m_hitSounds:
+  - {fileID: 8300000, guid: 8bdc16525e4430f4985c7d2fb9951671, type: 3}
+  - {fileID: 8300000, guid: 6ad3bcf1e46bb054a88e3fe2035d5dbb, type: 3}
+  - {fileID: 8300000, guid: 775ef041e1293be498bf88eb7d788d7b, type: 3}
+  - {fileID: 8300000, guid: 6d983ce4307942249a0b8eaa1da6a450, type: 3}
+  - {fileID: 8300000, guid: 6cd090c1b4218834484e88ad1691c1bc, type: 3}
+  m_hitSparks: {fileID: 100000, guid: b7eaf2d52f1590541afcbc358923aacf, type: 2}
 --- !u!4 &1600116430
 Transform:
   m_ObjectHideFlags: 0
@@ -2695,6 +3159,65 @@ Transform:
   - {fileID: 2099572717}
   m_Father: {fileID: 0}
   m_RootOrder: 16
+--- !u!82 &1600116431
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8200000, guid: 4ad211f9ee8699c45a2881289c37e15d,
+    type: 2}
+  m_PrefabInternal: {fileID: 186580340}
+  m_GameObject: {fileID: 1600116426}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &1716368933
 GameObject:
   m_ObjectHideFlags: 0
@@ -2829,6 +3352,7 @@ GameObject:
   - 114: {fileID: 1830015563}
   - 50: {fileID: 1830015562}
   - 58: {fileID: 1830015561}
+  - 82: {fileID: 1830015565}
   m_Layer: 0
   m_Name: lumberjack
   m_TagString: Untagged
@@ -2855,8 +3379,8 @@ Rigidbody2D:
     type: 2}
   m_PrefabInternal: {fileID: 957757370}
   m_GameObject: {fileID: 1830015560}
-  m_Mass: 5
-  m_LinearDrag: 1
+  m_Mass: 20
+  m_LinearDrag: 5
   m_AngularDrag: .0500000007
   m_GravityScale: 0
   m_FixedAngle: 1
@@ -2876,7 +3400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df533b7c1fbee8241aed520ecf612b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_moveSpeed: 20
+  m_moveSpeed: 200
   m_move: 1
   m_dirFlipObj: {fileID: 2091327724}
   m_velocityOnBallToKillMe: 10
@@ -2898,6 +3422,14 @@ MonoBehaviour:
   m_burnParticle: {fileID: 0}
   m_velocityAffectOnAnimSpd: .400000006
   m_animSpdMax: 2
+  m_soundSource: {fileID: 1830015565}
+  m_hitSounds:
+  - {fileID: 8300000, guid: 8bdc16525e4430f4985c7d2fb9951671, type: 3}
+  - {fileID: 8300000, guid: 6ad3bcf1e46bb054a88e3fe2035d5dbb, type: 3}
+  - {fileID: 8300000, guid: 775ef041e1293be498bf88eb7d788d7b, type: 3}
+  - {fileID: 8300000, guid: 6d983ce4307942249a0b8eaa1da6a450, type: 3}
+  - {fileID: 8300000, guid: 6cd090c1b4218834484e88ad1691c1bc, type: 3}
+  m_hitSparks: {fileID: 100000, guid: b7eaf2d52f1590541afcbc358923aacf, type: 2}
 --- !u!4 &1830015564
 Transform:
   m_ObjectHideFlags: 0
@@ -2911,6 +3443,65 @@ Transform:
   - {fileID: 2091327724}
   m_Father: {fileID: 0}
   m_RootOrder: 12
+--- !u!82 &1830015565
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 8200000, guid: 4ad211f9ee8699c45a2881289c37e15d,
+    type: 2}
+  m_PrefabInternal: {fileID: 957757370}
+  m_GameObject: {fileID: 1830015560}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
 --- !u!1 &1850116901
 GameObject:
   m_ObjectHideFlags: 0

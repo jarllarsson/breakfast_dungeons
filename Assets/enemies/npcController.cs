@@ -59,6 +59,12 @@ public class npcController : MonoBehaviour
     public Sprite m_burnFace;
     public Transform m_burnParticle;
     public float m_velocityAffectOnAnimSpd=0.4f, m_animSpdMax=3.0f;
+
+
+    public AudioSource m_soundSource;
+    public AudioClip[] m_hitSounds;
+    public GameObject m_hitSparks; 
+
 	void Start () 
     {
         m_dir = new Vector2(1.0f, 1.0f);
@@ -247,8 +253,10 @@ public class npcController : MonoBehaviour
     void OnColl2D(Collider2D coll, Collision2D collision = null)
     {
         //Debug.Log(coll.gameObject.tag);
-        if (coll.gameObject.tag == "ball")
+        if (coll.gameObject.tag == "ball" && !m_dying)
         {
+
+
             ballFx ballScript = coll.gameObject.GetComponent<ballFx>();
             float velocity = 0.0f;
             if (ballScript)
@@ -258,7 +266,12 @@ public class npcController : MonoBehaviour
 
             if (velocity >= m_velocityOnBallToKillMe)
             {
-                kill(DeathCause.SMASHED, 0.2f);
+                Vector2 pos=collision.contacts[0].point;
+                rigidbody2D.fixedAngle = false;
+                rigidbody2D.AddForceAtPosition(coll.rigidbody2D.velocity.normalized * velocity * 2000.0f, pos);
+                if (m_hitSparks) Instantiate(m_hitSparks, new Vector3(pos.x,pos.y,transform.position.z), Quaternion.identity);
+                if (!m_soundSource.isPlaying) m_soundSource.PlayOneShot(m_hitSounds[Random.Range(0, m_hitSounds.Length)]);
+                kill(DeathCause.SMASHED, 0.5f);               
                 if (m_camShake) m_camShake.Activate(0.5f, coll.rigidbody2D.velocity.normalized * velocity * 0.1f, new Vector2(velocity, velocity));
             }
         }
