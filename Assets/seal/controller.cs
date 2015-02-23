@@ -11,7 +11,7 @@ public class controller : MonoBehaviour {
     public Transform m_tail;
     public Transform m_springConnector;
     public swing m_paddle1, m_paddle2;
-    private int m_dirAnimHash;
+    private int m_dirAnimHash, m_deadStateAnimHash;
     public Animator m_faceAnimation;
     public float m_flipSpeed = 10.0f;
     private float m_flipT=1.0f;
@@ -25,8 +25,18 @@ public class controller : MonoBehaviour {
     private Vector3 m_startPos;
     public float m_normalDrag = 5.0f, m_outsideDrag = 30.0f, m_veryOutsideDrag=35.0f;
 	// Use this for initialization
+    public bool m_handleInput=true;
+    public SpriteRenderer m_spriteRendererHead;
+    public Sprite m_deadHeadSprite;
+
+    public Transform m_gameOverText;
+
+    public bool m_trigDeath;
+    private bool m_dead;
+
 	void Start () {
 	    m_dirAnimHash=Animator.StringToHash("facing");
+        m_deadStateAnimHash = Animator.StringToHash("dead");
         startY=Input.acceleration.y;
         startYList = new float[10];
         m_startPos = transform.position;
@@ -34,68 +44,86 @@ public class controller : MonoBehaviour {
 	
     void Update()
     {
+        if (m_trigDeath) kill();
+
         Vector3 myLocalConnectorPoint = transform.InverseTransformPoint(m_springConnector.position);
         m_spring.anchor = new Vector2(myLocalConnectorPoint.x, myLocalConnectorPoint.y);
         m_lineRenderer.SetPosition(0, m_springConnector.position);
         m_lineRenderer.SetPosition(1, m_spring.connectedBody.transform.position);
-
-        // anims
-        Vector2 vel=rigidbody2D.velocity;
-        float velMagnitude = vel.magnitude;
-        if (Mathf.Abs(velMagnitude) > m_maxAbsVelMp) m_maxAbsVelMp = Mathf.Abs(velMagnitude);
-        float dirSign = 1.0f;
-        if (velMagnitude>5.0f)
+        if (!m_dead)
         {
-            m_paddle1.m_speedMp = 1.0f + (velMagnitude - 0.5f) * 0.05f;
-            m_paddle2.m_speedMp = 1.0f + (velMagnitude - 0.5f) * 0.05f;
-            if (vel.y>2.0f)
-                m_faceAnimation.SetInteger(m_dirAnimHash,1); // backface
-            else
-                m_faceAnimation.SetInteger(m_dirAnimHash,0); // frontface
-            float speedMp = Mathf.Max(1.0f, m_maxAbsVelMp);
-            if (vel.x > 0.0f)
+            // anims
+            Vector2 vel = rigidbody2D.velocity;
+            float velMagnitude = vel.magnitude;
+            if (Mathf.Abs(velMagnitude) > m_maxAbsVelMp) m_maxAbsVelMp = Mathf.Abs(velMagnitude);
+            float dirSign = 1.0f;
+            if (velMagnitude > 5.0f)
             {
-                m_flipT = Mathf.Lerp(m_flipT, -1.0f, -(m_flipT - 2.0f) * m_flipSpeed * speedMp * Time.deltaTime);
-                m_face.localScale = new Vector3(blorp(m_flipT, -vel.x), 1.0f, 1.0f);
+                m_paddle1.m_speedMp = 1.0f + (velMagnitude - 0.5f) * 0.05f;
+                m_paddle2.m_speedMp = 1.0f + (velMagnitude - 0.5f) * 0.05f;
+                if (vel.y > 2.0f)
+                    m_faceAnimation.SetInteger(m_dirAnimHash, 1); // backface
+                else
+                    m_faceAnimation.SetInteger(m_dirAnimHash, 0); // frontface
+                float speedMp = Mathf.Max(1.0f, m_maxAbsVelMp);
+                if (vel.x > 0.0f)
+                {
+                    m_flipT = Mathf.Lerp(m_flipT, -1.0f, -(m_flipT - 2.0f) * m_flipSpeed * speedMp * Time.deltaTime);
+                    m_face.localScale = new Vector3(blorp(m_flipT, -vel.x), 1.0f, 1.0f);
+                    dirSign = m_face.localScale.x;
+                }
+                else
+                {
+                    m_flipT = Mathf.Lerp(m_flipT, 1.0f, (m_flipT + 2.0f) * m_flipSpeed * speedMp * Time.deltaTime);
+                    m_face.localScale = new Vector3(blorp(m_flipT, -vel.x), 1.0f, 1.0f);
+                }
+                //
+            }
+            else
+            {
+                if (m_face.localScale.x < 0.0f)
+                    m_face.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+                else
+                    m_face.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                 dirSign = m_face.localScale.x;
             }
-            else
+            if (velMagnitude > 0.5f)
+                m_tail.localRotation = Quaternion.Euler(0.0f, 0.0f, Mathf.Rad2Deg * Mathf.Atan2(-vel.y, -vel.x * dirSign));
+
+            // if outside
+            Vector3 deltaPosFromStart = transform.position - m_startPos;
+            if (deltaPosFromStart.x > -m_outsideHDist.x && deltaPosFromStart.x < m_outsideHDist.x &&
+                deltaPosFromStart.y > -m_outsideHDist.y && deltaPosFromStart.y < m_outsideHDist.y)
             {
-                m_flipT = Mathf.Lerp(m_flipT, 1.0f, (m_flipT + 2.0f) * m_flipSpeed * speedMp * Time.deltaTime);
-                m_face.localScale = new Vector3(blorp(m_flipT, -vel.x), 1.0f, 1.0f);
-            }
-            //
-        }
-        else
-        {
-            if (m_face.localScale.x<0.0f)
-                m_face.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-            else
-                m_face.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            dirSign = m_face.localScale.x;
-        }
-        if (velMagnitude > 0.5f)
-            m_tail.localRotation = Quaternion.Euler(0.0f, 0.0f, Mathf.Rad2Deg * Mathf.Atan2(-vel.y, -vel.x * dirSign));
-        
-        // if outside
-        Vector3 deltaPosFromStart=transform.position-m_startPos;
-        if (deltaPosFromStart.x > -m_outsideHDist.x && deltaPosFromStart.x < m_outsideHDist.x &&
-            deltaPosFromStart.y > -m_outsideHDist.y && deltaPosFromStart.y < m_outsideHDist.y)
-        {
-            rigidbody2D.drag = m_normalDrag;
-        }
-        else
-        {
-            if (deltaPosFromStart.x > -m_outsideHDist.x - 8.0f && deltaPosFromStart.x < m_outsideHDist.x + 8.0f &&
-            deltaPosFromStart.y > -m_outsideHDist.y - 8.0f && deltaPosFromStart.y < m_outsideHDist.y + 8.0f)
-            {
-                rigidbody2D.drag = m_outsideDrag;
+                rigidbody2D.drag = m_normalDrag;
             }
             else
-                rigidbody2D.drag = m_veryOutsideDrag;
+            {
+                if (deltaPosFromStart.x > -m_outsideHDist.x - 8.0f && deltaPosFromStart.x < m_outsideHDist.x + 8.0f &&
+                deltaPosFromStart.y > -m_outsideHDist.y - 8.0f && deltaPosFromStart.y < m_outsideHDist.y + 8.0f)
+                {
+                    rigidbody2D.drag = m_outsideDrag;
+                }
+                else
+                    rigidbody2D.drag = m_veryOutsideDrag;
+            }
         }
             
 
+    }
+
+    public void kill()
+    {
+        if (!m_dead)
+        {
+            m_handleInput = false;
+            m_spriteRendererHead.sprite = m_deadHeadSprite;
+            m_faceAnimation.SetBool(m_deadStateAnimHash, true);
+            m_paddle1.enabled = false;
+            m_paddle2.enabled = false;
+            m_dead = true;
+            GameObject goText = Instantiate(m_gameOverText, transform.position+new Vector3(0.0f,0.0f,10.0f), Quaternion.identity) as GameObject;
+        }
     }
 
     float blorp(float p_t, float p_dir)
@@ -125,7 +153,7 @@ public class controller : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () 
     {
-        //if (calibrationTime<0.0f)
+        if (m_handleInput)
         {
             Vector2 dirInput = Vector2.zero;
 #if (!UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID))

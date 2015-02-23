@@ -266,6 +266,11 @@ MonoBehaviour:
   m_normalDrag: 5
   m_outsideDrag: 20
   m_veryOutsideDrag: 40
+  m_handleInput: 1
+  m_spriteRendererHead: {fileID: 21200004}
+  m_deadHeadSprite: {fileID: 21300026, guid: dd9432f3a3244d349be00429ff4837e1, type: 3}
+  m_gameOverText: {fileID: 400004, guid: 168aeeb692cf8b64f8fcbd0875c01483, type: 2}
+  m_trigDeath: 0
 --- !u!114 &11400004
 MonoBehaviour:
   m_ObjectHideFlags: 1
