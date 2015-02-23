@@ -16,6 +16,7 @@ public class npcController : MonoBehaviour
     public float m_moveSpeed=100.0f;
     public bool m_move=true;
     public Transform m_dirFlipObj;
+    public float m_velocityOnBallToKillMe = 10.0f;
 
     public float m_chaseDistance, m_attackDistance;
 
@@ -41,6 +42,8 @@ public class npcController : MonoBehaviour
     public static GameObject m_player;
     private float m_origMoveSpeed;
 
+    public float m_walkDirChangeRate = 0.1f, m_chaseUpdateRate = 0.9f;
+
 
     private bool m_isMoving = false;
     private float m_distanceToPlayer;
@@ -49,17 +52,19 @@ public class npcController : MonoBehaviour
     private float m_ownDt = 0.0f;
 
     public static bool m_firstBlood = false;
-
+    private static shake m_camShake;
 
     public bool m_onFire;
     private float m_burnClock;
     public Sprite m_burnFace;
     public Transform m_burnParticle;
-
+    public float m_velocityAffectOnAnimSpd=0.4f, m_animSpdMax=3.0f;
 	void Start () 
     {
+        m_dir = new Vector2(1.0f, 1.0f);
         m_origMoveSpeed = m_moveSpeed;
         if (m_player == null) m_player = GameObject.FindGameObjectWithTag("Player");
+        if (m_camShake == null) m_camShake = GameObject.FindGameObjectWithTag("camshaker").GetComponent<shake>();
 
         m_animActionState = Animator.StringToHash("npcActionState");
         //
@@ -72,6 +77,7 @@ public class npcController : MonoBehaviour
         m_ownDt += Time.deltaTime;
         if (m_ownDt>0.1f)
         {
+            float velocity = rigidbody2D.velocity.magnitude;
             if (m_onFire && !m_dying)
             {
                 m_burnClock -= m_ownDt;
@@ -95,9 +101,12 @@ public class npcController : MonoBehaviour
                     int gibs = Random.Range(m_gibsMin, m_gibsMax);
                     for (int i = 0; i < gibs; i++)
                     {
-                        Transform gib = Instantiate(m_gib, transform.position + new Vector3(((float)i - ((float)gibs * 0.5f)) * 0.1f, 1.0f, 0.0f), Quaternion.identity) as Transform;
-                        gib.rigidbody2D.AddForce(new Vector2(Random.Range(-200.0f, 200.0f), Random.Range(200.0f, 700.0f)));
-                        gib.rigidbody2D.AddTorque(Random.Range(-20.0f, 20.0f));
+                        if (m_gib)
+                        {
+                            Transform gib = Instantiate(m_gib, transform.position + new Vector3(((float)i - ((float)gibs * 0.5f)) * 0.1f, 1.0f, 0.0f), Quaternion.identity) as Transform;
+                            gib.rigidbody2D.AddForce(new Vector2(Random.Range(-200.0f, 200.0f), Random.Range(200.0f, 700.0f)));
+                            gib.rigidbody2D.AddTorque(Random.Range(-20.0f, 20.0f));
+                        }
                     }
                 }
 
@@ -115,11 +124,12 @@ public class npcController : MonoBehaviour
                 if (m_activeDirectionChange) // player is alive and enemy is allowed to change its direction
                 {
                     m_distanceToPlayer = (transform.position - m_player.transform.position).magnitude;
-                    int r = rnd.Next(0, 1000);
+                    int rmax = 1000;
+                    int r = rnd.Next(0, rmax);
                     // if enemy is outside its chase distance
                     if (/*!m_playerIsDead && */m_distanceToPlayer > m_chaseDistance)
                     {
-                        if (r > 50 && r < 120)
+                        if (r < (int)((float)rmax * m_walkDirChangeRate))
                         {
                             if (m_onFire)
                                 setDirToRandom(5.0f,0.1f); // frantic fire run
@@ -129,7 +139,7 @@ public class npcController : MonoBehaviour
                     }
                     else // if player is alive and enemy is outside its chase distance
                     {
-                        if (r > 50 && r < 100)
+                        if (r < (int)((float)rmax * m_chaseUpdateRate))
                         {
                             setDirToPlayer(1.0f);
                         }
@@ -138,10 +148,12 @@ public class npcController : MonoBehaviour
                 if ((!m_activeDirectionChange || (m_activeDirectionChange && m_stillTick <= 0.0f)) && // if not active dir change, or active dir change and able to move
                     m_move)
                 {
-                    m_dirFlipObj.localScale = new Vector3(m_dir.x, 1.0f, 1.0f);
+                    m_dirFlipObj.localScale = new Vector3(m_dir.x < 0.0f ? -1.0f : 1.0f, 1.0f, 1.0f);
                     m_isMoving = true;
                 }
                 m_stillTick -= m_ownDt;
+
+                m_npcBaseAnim.speed = Mathf.Min(m_animSpdMax,velocity*m_velocityAffectOnAnimSpd);
 
                 if (Mathf.Abs(rigidbody2D.velocity.x) > 0.01f)
                     m_npcBaseAnim.SetInteger(m_animActionState, 1); // walk
@@ -151,20 +163,23 @@ public class npcController : MonoBehaviour
             }
             m_ownDt = 0.0f;
         }
+        Debug.DrawLine(transform.position, transform.position + new Vector3(m_dir.x, m_dir.y, 0.0f), Color.red);
     }
 
     void setDirToRandom(float m_speedMp, float m_coolDownFac=1.0f)
     {
-        m_dir *= -1.0f;
+        m_dir = new Vector2(Random.Range(-1.0f,1.0f),Random.Range(-1.0f,1.0f));
+        m_dir.Normalize();
         m_moveSpeed = m_speedMp*m_origMoveSpeed;
         m_stillTick = m_coolDownFac*m_stillTickLim;
     }
     void setDirToPlayer(float m_speedMp)
     {
         m_moveSpeed = m_origMoveSpeed * m_speedMp;
-        m_dir.x = (m_player.transform.position.x + Random.Range(-2.0f, 2.0f) - transform.position.x) < 0.0f ? -1.0f : 1.0f;
-        m_dir.y = (m_player.transform.position.y + Random.Range(-2.0f, 2.0f) - transform.position.y) < 0.0f ? -1.0f : 1.0f;
-        m_stillTick = m_stillTickLim * 0.5f;
+        m_dir.x = (m_player.transform.position.x + Random.Range(-2.0f, 2.0f) - transform.position.x);
+        m_dir.y = (m_player.transform.position.y + Random.Range(-2.0f, 2.0f) - transform.position.y);
+        m_dir.Normalize();
+        //m_stillTick = m_stillTickLim * 0.5f;
     }
 
 
@@ -196,8 +211,6 @@ public class npcController : MonoBehaviour
                         Instantiate(m_bloodFxZap, transform.position + Vector3.up * collider2D.bounds.extents.y * 0.5f, Quaternion.identity);
                 }
             }
-            else
-                Destroy(gameObject);
             m_dying = true;
         }
     }
@@ -234,9 +247,20 @@ public class npcController : MonoBehaviour
     void OnColl2D(Collider2D coll, Collision2D collision = null)
     {
         //Debug.Log(coll.gameObject.tag);
-        if (coll.gameObject.tag == "ball" && coll.rigidbody2D.velocity.magnitude > 3.0f)
+        if (coll.gameObject.tag == "ball")
         {
-            kill(DeathCause.SMASHED);
+            ballFx ballScript = coll.gameObject.GetComponent<ballFx>();
+            float velocity = 0.0f;
+            if (ballScript)
+                velocity = ballScript.m_smoothVelocity;
+            else
+                velocity = coll.rigidbody2D.velocity.magnitude;
+
+            if (velocity >= m_velocityOnBallToKillMe)
+            {
+                kill(DeathCause.SMASHED, 0.2f);
+                if (m_camShake) m_camShake.Activate(0.5f, coll.rigidbody2D.velocity.normalized * velocity * 0.1f, new Vector2(velocity, velocity));
+            }
         }
         else if (coll.gameObject.tag == "obstruction" && coll.rigidbody2D.velocity.y<-0.5f)
         {
