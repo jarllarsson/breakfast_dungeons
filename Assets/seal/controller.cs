@@ -20,7 +20,7 @@ public class controller : MonoBehaviour {
     float[] startYList;
     int startYidx = 0;
     float calibrationTime = 2.0f;
-    public Text m_calibDbgText, m_tiltTxt;
+
     public Vector2 m_outsideHDist;
     private Vector3 m_startPos;
     public float m_normalDrag = 5.0f, m_outsideDrag = 30.0f, m_veryOutsideDrag=35.0f;
@@ -30,9 +30,27 @@ public class controller : MonoBehaviour {
     public Sprite m_deadHeadSprite;
 
     public Transform m_gameOverText;
+    public ParticleSystem m_heart;
 
     public bool m_trigDeath;
     private bool m_dead;
+
+    public int m_hp = 2;
+    public float m_invulnTime = 2.0f;
+    private float m_invulnTick;
+
+    public GameObject m_hitFx;
+    private static shake m_camShake;
+    public AudioSource m_soundSource;
+    public AudioClip m_hurtsound;
+    public AudioClip[] m_barksounds;
+
+    public SpriteRenderer m_ballSprite;
+    private int m_ballComboCount;
+    public float m_ballComboCoolDownTime;
+    private float m_ballComboCooldownTick;
+    public Image m_healthUI;
+    public Sprite[] m_healthUISprites;
 
 	void Start () {
 	    m_dirAnimHash=Animator.StringToHash("facing");
@@ -40,16 +58,63 @@ public class controller : MonoBehaviour {
         startY=Input.acceleration.y;
         startYList = new float[10];
         m_startPos = transform.position;
+        if (m_camShake == null) m_camShake = GameObject.FindGameObjectWithTag("camshaker").GetComponent<shake>();
 	}
+
+    public void registerEnemyHurtbyBall()
+    {
+        if (m_ballComboCooldownTick > 0.0f)
+            m_ballComboCount++;
+        m_ballComboCooldownTick = m_ballComboCoolDownTime;
+        StartCoroutine("happyEffect");
+    }
 	
+    IEnumerator happyEffect()
+    {
+        yield return new WaitForSeconds(0.6f);
+        m_hp++;
+        if (m_hp > 2) m_hp = 2;
+        updateHealthUI();
+        if (!m_soundSource.isPlaying)
+        {
+            m_soundSource.PlayOneShot(m_barksounds[Random.Range(0, m_barksounds.Length)]);
+        }
+        m_heart.Play();
+    }
+
+    void updateHealthUI()
+    {
+        int imgIdx=m_hp-1;
+        if (imgIdx >= 0 && imgIdx < m_healthUISprites.Length)
+        {
+            m_healthUI.sprite = m_healthUISprites[m_hp - 1];
+            m_healthUI.enabled = true;
+        }
+        else if (imgIdx < 0)
+            m_healthUI.enabled = false;
+    }
+
     void Update()
     {
         if (m_trigDeath) kill();
+        if (m_ballComboCooldownTick>0.0f)
+        {
+            m_ballComboCooldownTick -= Time.deltaTime;
+            m_ballSprite.color = Color.Lerp(Color.Lerp(Color.yellow,Color.magenta,Mathf.Clamp01((float)m_ballComboCount/3.0f)),
+                                            Color.white,1.0f-(m_ballComboCooldownTick/m_ballComboCoolDownTime));
+        }
+        else
+        {
+            if (m_ballComboCount > 0) m_ballSprite.color = Color.white;
+            m_ballComboCount = 0;         
+        }
 
         Vector3 myLocalConnectorPoint = transform.InverseTransformPoint(m_springConnector.position);
         m_spring.anchor = new Vector2(myLocalConnectorPoint.x, myLocalConnectorPoint.y);
         m_lineRenderer.SetPosition(0, m_springConnector.position);
         m_lineRenderer.SetPosition(1, m_spring.connectedBody.transform.position);
+        float dist = (m_springConnector.position - m_spring.connectedBody.transform.position).magnitude;
+        m_lineRenderer.materials[0].mainTextureScale = new Vector2(dist/4.0f, 1.0f);
         if (!m_dead)
         {
             // anims
@@ -108,13 +173,39 @@ public class controller : MonoBehaviour {
                     rigidbody2D.drag = m_veryOutsideDrag;
             }
         }
-            
 
+        handleInvuln();
     }
 
-    public void kill()
+    void handleInvuln()
     {
-        if (!m_dead)
+        if (m_invulnTick > 0.0f)
+        {
+            if (m_invulnTick < m_invulnTime * 0.5f && m_invulnTick > m_invulnTime * 0.48f && !m_soundSource.isPlaying)
+                m_soundSource.PlayOneShot(m_hurtsound);
+            m_face.renderer.enabled = !m_face.renderer.enabled;
+            m_paddle1.renderer.enabled = !m_paddle1.renderer.enabled;
+            m_paddle2.renderer.enabled = !m_paddle2.renderer.enabled;
+            m_tail.renderer.enabled = !m_tail.renderer.enabled;
+        }
+        else if (m_invulnTick>-10000.0f)
+        {
+            m_face.renderer.enabled = true;
+            m_paddle1.renderer.enabled = true;
+            m_paddle2.renderer.enabled = true;
+            m_tail.renderer.enabled = true;
+            m_invulnTick = -20000.0f;
+        }
+
+        m_invulnTick -= Time.deltaTime;
+    }
+
+    IEnumerator kill()
+    {
+        Debug.Log("die1");
+        yield return new WaitForSeconds(2.0f);
+        Debug.Log("die2");
+        if (!m_dead && m_hp<=0)
         {
             m_handleInput = false;
             m_spriteRendererHead.sprite = m_deadHeadSprite;
@@ -172,18 +263,39 @@ public class controller : MonoBehaviour {
             rigidbody2D.AddForce(dirInput * m_movePower);
             m_maxAbsVelMp *= 0.95f;
         }
-        //else
-        //{
-        //    startYidx++;
-        //    calibrationTime -= Time.deltaTime;
-        //    startY = 0.0f;
-        //    foreach (float val in startYList)
-        //        startY += val;
-        //    startY /= startYList.Length;
-        //    startYList[startYidx % startYList.Length] = Input.acceleration.y;
-        //}
-        m_calibDbgText.text = startY.ToString();
-        m_tiltTxt.text = "tilt x: " + Input.acceleration.x.ToString() + "|  tilt y: " + Input.acceleration.y.ToString();
+
 	}
 
+    void OnTriggerEnter2D(Collider2D p_other)
+    {
+        HandlePain(p_other);
+    }
+
+    void OnTriggerStay2D(Collider2D p_other)
+    {
+        HandlePain(p_other);
+    }
+
+    public bool isDead()
+    {
+        return m_dead;
+    }
+
+    void HandlePain(Collider2D p_other)
+    {
+        Debug.Log(p_other.gameObject.tag);
+        if (p_other.gameObject.tag == "playerHurt" && m_invulnTick<=0.0f && !m_dead)
+        {
+            m_hp--; 
+            if (m_hp <= 0)
+                StartCoroutine("kill");
+            updateHealthUI();
+            Instantiate(m_hitFx, transform.position, Quaternion.identity);
+            m_invulnTick = m_invulnTime;
+            Vector3 hitDir = (transform.position - p_other.transform.position).normalized;
+            rigidbody2D.AddForce(hitDir * 20000.0f);
+            if (m_camShake) m_camShake.Activate(1.0f, hitDir * 5.0f, new Vector2(10.0f, 20.0f));
+            
+        }
+    }
 }

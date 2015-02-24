@@ -1,8 +1,8 @@
 fileFormatVersion: 2
-guid: 561329766926e9a4199bb378e2b999f1
+guid: fb9755925bff57d499efb8473b6a5101
 TextureImporter:
   fileIDToRecycleName:
-    21300000: swish
+    21300000: chain
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -22,25 +22,25 @@ TextureImporter:
   grayScaleToAlpha: 0
   generateCubemap: 0
   seamlessCubemap: 0
-  textureFormat: -1
+  textureFormat: -3
   maxTextureSize: 1024
   textureSettings:
     filterMode: 0
     aniso: 1
     mipBias: -1
-    wrapMode: 1
-  nPOTScale: 0
+    wrapMode: 0
+  nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 0
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: .5, y: .5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 15
   alphaIsTransparency: 1
-  textureType: 8
+  textureType: 5
   buildTargetSettings: []
   spriteSheet:
     sprites: []

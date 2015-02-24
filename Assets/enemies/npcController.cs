@@ -17,6 +17,7 @@ public class npcController : MonoBehaviour
     public bool m_move=true;
     public Transform m_dirFlipObj;
     public float m_velocityOnBallToKillMe = 10.0f;
+    public float m_atkTime = 0.3f, m_atkTimeTick;
 
     public float m_chaseDistance, m_attackDistance;
 
@@ -39,7 +40,7 @@ public class npcController : MonoBehaviour
     public int m_gibsMax, m_gibsMin;
     public bool m_activeDirectionChange=true;
     public static bool m_playerIsDead;
-    public static GameObject m_player;
+    public static controller m_player;
     private float m_origMoveSpeed;
 
     public float m_walkDirChangeRate = 0.1f, m_chaseUpdateRate = 0.9f;
@@ -64,24 +65,39 @@ public class npcController : MonoBehaviour
     public AudioSource m_soundSource;
     public AudioClip[] m_hitSounds;
     public GameObject m_hitSparks; 
+    private bool m_isAttacking;
+    public float m_attackCooldown=4.0f;
+    private float m_attackCooldownTick;
+    public Collider2D m_playerHurtArea;
+
+    public GameObject m_atkSmashFx;
+
+    public void disableAtk()
+    {
+        m_isAttacking = false;
+        m_npcBaseAnim.SetInteger(m_animActionState, 1);
+        m_attackCooldownTick = m_attackCooldown;
+        m_playerHurtArea.enabled = false;
+    }
 
 	void Start () 
     {
         m_dir = new Vector2(1.0f, 1.0f);
         m_origMoveSpeed = m_moveSpeed;
-        if (m_player == null) m_player = GameObject.FindGameObjectWithTag("Player");
+        if (m_player == null) m_player = GameObject.FindGameObjectWithTag("Player").GetComponent<controller>();
         if (m_camShake == null) m_camShake = GameObject.FindGameObjectWithTag("camshaker").GetComponent<shake>();
 
         m_animActionState = Animator.StringToHash("npcActionState");
         //
         m_totalCurrent++;
+        m_playerHurtArea.enabled = false;
 	}
 
 
     void Update()
     {
         m_ownDt += Time.deltaTime;
-        if (m_ownDt>0.1f)
+        if (m_ownDt > 0.1f && !m_isAttacking)
         {
             float velocity = rigidbody2D.velocity.magnitude;
             if (m_onFire && !m_dying)
@@ -166,8 +182,19 @@ public class npcController : MonoBehaviour
                 else
                     m_npcBaseAnim.SetInteger(m_animActionState, 0); // idle
 
+                m_attackCooldownTick -= m_ownDt;
+                if (m_attackCooldownTick<=0.0f) tryAttack();
+
             }
             m_ownDt = 0.0f;
+        }
+        if (m_isAttacking)
+        {
+            if (m_atkTimeTick >= m_atkTime)
+            {
+                disableAtk();
+            }
+            m_atkTimeTick += Time.deltaTime;
         }
         Debug.DrawLine(transform.position, transform.position + new Vector3(m_dir.x, m_dir.y, 0.0f), Color.red);
     }
@@ -188,11 +215,25 @@ public class npcController : MonoBehaviour
         //m_stillTick = m_stillTickLim * 0.5f;
     }
 
+    void tryAttack()
+    {
+        if (m_distanceToPlayer<=m_attackDistance && !m_player.isDead())
+        {
+            m_npcBaseAnim.SetInteger(m_animActionState, 2);
+            //m_stillTick = m_stillTickLim * 0.5f;
+            m_isAttacking = true;
+            m_atkTimeTick = 0.0f;
+            m_isMoving = false;
+            m_npcBaseAnim.speed = 1.0f;
+            m_playerHurtArea.enabled = true;
+            Instantiate(m_atkSmashFx, m_playerHurtArea.transform.position, Quaternion.identity);
+        }
+    }
 
 	// Update is called once per frame
 	void FixedUpdate () 
     {
-        if (m_isMoving) rigidbody2D.AddForce(m_dir * m_moveSpeed); // move
+        if (m_isMoving && !m_isAttacking) rigidbody2D.AddForce(m_dir * m_moveSpeed); // move
 	}
 
     public void kill(DeathCause p_cause, float p_deathClock = 0.0f)
@@ -253,7 +294,7 @@ public class npcController : MonoBehaviour
     void OnColl2D(Collider2D coll, Collision2D collision = null)
     {
         //Debug.Log(coll.gameObject.tag);
-        if (coll.gameObject.tag == "ball" && !m_dying)
+        if (coll.gameObject.tag == "ball" && !m_dying && !m_player.isDead())
         {
 
 
@@ -271,6 +312,7 @@ public class npcController : MonoBehaviour
                 rigidbody2D.AddForceAtPosition(coll.rigidbody2D.velocity.normalized * velocity * 2000.0f, pos);
                 if (m_hitSparks) Instantiate(m_hitSparks, new Vector3(pos.x,pos.y,transform.position.z), Quaternion.identity);
                 if (!m_soundSource.isPlaying) m_soundSource.PlayOneShot(m_hitSounds[Random.Range(0, m_hitSounds.Length)]);
+                if (m_player) m_player.registerEnemyHurtbyBall();
                 kill(DeathCause.SMASHED, 0.5f);               
                 if (m_camShake) m_camShake.Activate(0.5f, coll.rigidbody2D.velocity.normalized * velocity * 0.1f, new Vector2(velocity, velocity));
             }

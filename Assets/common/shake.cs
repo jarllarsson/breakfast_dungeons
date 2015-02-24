@@ -17,6 +17,7 @@ public class shake : MonoBehaviour
     void Start()
     {
         startPos = transform.localPosition;
+        if (m_time == 0.0f) m_time = 1.0f;
     }
 
     // Update is called once per frame
