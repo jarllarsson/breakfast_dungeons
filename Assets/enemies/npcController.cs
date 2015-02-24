@@ -82,6 +82,8 @@ public class npcController : MonoBehaviour
 
 	void Start () 
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         m_dir = new Vector2(1.0f, 1.0f);
         m_origMoveSpeed = m_moveSpeed;
         if (m_player == null) m_player = GameObject.FindGameObjectWithTag("Player").GetComponent<controller>();
@@ -92,6 +94,11 @@ public class npcController : MonoBehaviour
         m_totalCurrent++;
         m_playerHurtArea.enabled = false;
 	}
+
+    void OnDestroy()
+    {
+        Screen.sleepTimeout = SleepTimeout.SystemSetting;
+    }
 
 
     void Update()
