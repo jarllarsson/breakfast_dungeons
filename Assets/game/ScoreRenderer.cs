@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class ScoreRenderer : MonoBehaviour 
 {
-    public Text m_scoreText, m_comboText;
+    public Text m_scoreText, m_comboTextGem, m_comboTextBall;
+    public Image m_comboBall, m_comboGem;
     public deltaScore[] m_scoreFx;
     public AudioSource m_audioSource;
     public AudioClip[] m_scoreSound;
@@ -18,9 +19,16 @@ public class ScoreRenderer : MonoBehaviour
     private int m_soundCount;
     private int m_currentScoreFx = 0;
     bool comboSnd = false;
+    public controller m_player;
+    int m_oldBallCombo = -1;
+
 	// Use this for initialization
 	void Start () {
         m_txtSzDefault = m_scoreText.rectTransform.localScale;
+        m_comboTextBall.enabled = false;
+        m_comboBall.enabled = false;
+        m_comboTextGem.enabled = false;
+        m_comboGem.enabled = false;
 	}
 	
 	// Update is called once per frame
@@ -45,13 +53,16 @@ public class ScoreRenderer : MonoBehaviour
             m_scoreText.text = scorestr;
             if (m_comboCount > 0)
             {
-                m_comboText.text = "Combo: " + m_comboCount;
-                m_comboText.enabled = true;
+                m_comboTextGem.text = "Gem +" + m_comboCount;
+                m_comboTextGem.enabled = true;
+                m_comboGem.enabled = true;
             }
             else
             {
-                m_comboText.enabled = false;
+                m_comboTextGem.enabled = false;
+                m_comboGem.enabled = false;
             }
+
 
             for (int i = 0; i < m_scoreFx.Length;i++ )
             {
@@ -65,6 +76,24 @@ public class ScoreRenderer : MonoBehaviour
                 }
             }
         }
+
+        int ballCombo = m_player.getBallCombo();
+        if (m_oldBallCombo != ballCombo)
+        {
+            m_oldBallCombo = ballCombo;
+            if (ballCombo > 0)
+            {
+                m_comboTextBall.text = "Hit +" + ballCombo;
+                m_comboTextBall.enabled = true;
+                m_comboBall.enabled = true;
+            }
+            else
+            {
+                m_comboTextBall.enabled = false;
+                m_comboBall.enabled = false;
+            }
+        }
+
         if (m_cooldowntick > 0.0f)
             m_cooldowntick -= Time.deltaTime;
         else
@@ -81,7 +110,7 @@ public class ScoreRenderer : MonoBehaviour
             m_cooldowntick = 0.0f;
         }
         float t=m_cooldowntick/m_cooldownticklim;
-        m_scoreText.rectTransform.localScale = m_txtSzDefault * (1.0f + Mathf.PingPong(t * m_cooldowntick * m_cooldowntick, 0.25f));
+        m_scoreText.rectTransform.localScale = m_txtSzDefault * (1.0f + Mathf.PingPong(0.4f*t * m_cooldowntick * m_cooldowntick, 0.25f));
         m_scoreText.color = Color.Lerp(m_inactiveCol, m_activeCol, t);
         m_oldScore = score;
 	}

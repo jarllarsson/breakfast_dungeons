@@ -43,7 +43,7 @@ public class controller : MonoBehaviour {
     public float m_invulnTime = 2.0f;
     private float m_invulnTick;
 
-    public GameObject m_hitFx;
+    public GameObject m_hitFx, m_gemFx;
     private static shake m_camShake;
     public AudioSource m_soundSource;
     public AudioClip m_hurtsound;
@@ -71,6 +71,11 @@ public class controller : MonoBehaviour {
             m_ballComboCount++;
         m_ballComboCooldownTick = m_ballComboCoolDownTime;
         StartCoroutine("happyEffect");
+    }
+
+    public int getBallCombo()
+    {
+        return m_ballComboCount;
     }
 	
     IEnumerator happyEffect()
@@ -290,12 +295,14 @@ public class controller : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D p_other)
     {
-        HandlePain(p_other);
+        bool res = HandlePain(p_other);
+        if (!res) PickupGem(p_other);
     }
 
     void OnTriggerStay2D(Collider2D p_other)
     {
-        HandlePain(p_other);
+        bool res = HandlePain(p_other);
+        if (!res) PickupGem(p_other);
     }
 
     public bool isDead()
@@ -303,7 +310,7 @@ public class controller : MonoBehaviour {
         return m_dead;
     }
 
-    void HandlePain(Collider2D p_other)
+    bool HandlePain(Collider2D p_other)
     {
         Debug.Log(p_other.gameObject.tag);
         if (p_other.gameObject.tag == "playerHurt" && m_invulnTick<=0.0f && !m_dead)
@@ -317,18 +324,22 @@ public class controller : MonoBehaviour {
             Vector3 hitDir = (transform.position - p_other.transform.position).normalized;
             rigidbody2D.AddForce(hitDir * 20000.0f);
             if (m_camShake) m_camShake.Activate(1.0f, hitDir * 5.0f, new Vector2(10.0f, 20.0f));
-            
+            return true;
         }
+        return false;
     }
 
-    void PickupGem(Collider2D p_other)
+    bool PickupGem(Collider2D p_other)
     {
         Debug.Log(p_other.gameObject.tag);
         if (p_other.gameObject.tag == "gem" && !m_dead)
         {
             Gem gem = p_other.gameObject.GetComponent<Gem>();
+            gem.pickup();
             ScoreSystem.add(gem.getVal());
             Instantiate(m_gemFx, transform.position, Quaternion.identity);
+            return true;
         }
+        return false;
     }
 }

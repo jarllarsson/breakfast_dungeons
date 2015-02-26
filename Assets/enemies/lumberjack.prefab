@@ -101,7 +101,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100004}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -36.1090012, y: 24.0979996, z: 0}
+  m_LocalPosition: {x: -41.0429993, y: 20.9090004, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400002}
@@ -282,6 +282,7 @@ MonoBehaviour:
   m_attackCooldown: 4
   m_playerHurtArea: {fileID: 5800002}
   m_atkSmashFx: {fileID: 100000, guid: bbc0bf7954ad1314884326b86b26b1b8, type: 2}
+  m_deathGem: {fileID: 100002, guid: 9f644cb780b62ac46959c3bbf635e536, type: 2}
 --- !u!212 &21200000
 SpriteRenderer:
   m_ObjectHideFlags: 1

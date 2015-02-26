@@ -71,6 +71,8 @@ public class npcController : MonoBehaviour
     public Collider2D m_playerHurtArea;
 
     public GameObject m_atkSmashFx;
+    public GameObject m_deathGem;
+    private int m_comboOnHit = 0;
 
     public void disableAtk()
     {
@@ -320,6 +322,11 @@ public class npcController : MonoBehaviour
                 if (m_hitSparks) Instantiate(m_hitSparks, new Vector3(pos.x,pos.y,transform.position.z), Quaternion.identity);
                 if (!m_soundSource.isPlaying) m_soundSource.PlayOneShot(m_hitSounds[Random.Range(0, m_hitSounds.Length)]);
                 if (m_player) m_player.registerEnemyHurtbyBall();
+                if (m_player) m_comboOnHit = m_player.getBallCombo();
+                GameObject gem;
+                gem = Instantiate(m_deathGem, transform.position, Quaternion.identity) as GameObject;
+                Gem gemscript = gem.GetComponent<Gem>();
+                gemscript.m_val = Mathf.Max(1, m_comboOnHit);
                 kill(DeathCause.SMASHED, 0.5f);               
                 if (m_camShake) m_camShake.Activate(0.5f, coll.rigidbody2D.velocity.normalized * velocity * 0.1f, new Vector2(velocity, velocity));
             }
