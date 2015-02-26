@@ -21,6 +21,8 @@ public class controller : MonoBehaviour {
     int startYidx = 0;
     float calibrationTime = 2.0f;
 
+    public Text dbgText;
+
     public Vector2 m_outsideHDist;
     private Vector3 m_startPos;
     public float m_normalDrag = 5.0f, m_outsideDrag = 30.0f, m_veryOutsideDrag=35.0f;
@@ -248,12 +250,13 @@ public class controller : MonoBehaviour {
         {
             Vector2 dirInput = Vector2.zero;
 #if (!UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID))
-            Vector2 tilt = new Vector2(Input.acceleration.x, Input.acceleration.y/* - startY*/);
+            Vector3 tilt = new Vector2(Input.acceleration.x, Input.acceleration.y, Input.acceleration.z);
             tilt.x *= Mathf.Clamp(m_tiltMultiplier.x * tilt.magnitude, 1.0f, m_tiltMultiplier.x);
             tilt.y *= Mathf.Clamp(m_tiltMultiplier.y * tilt.magnitude, 1.0f, m_tiltMultiplier.y);
             tilt.x = Mathf.Clamp(tilt.x, -m_tiltMax.x, m_tiltMax.y);
             tilt.y = Mathf.Clamp(tilt.y, -m_tiltMax.y, m_tiltMax.y);
             Debug.Log(tilt);
+            dbgText.text=tilt;
             dirInput = tilt;
 #else
             dirInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
