@@ -39,6 +39,7 @@ public class controller : MonoBehaviour {
     private bool m_dead;
 
     public int m_hp = 2;
+    public wobble m_hpWobbler;
     public float m_invulnTime = 2.0f;
     private float m_invulnTick;
 
@@ -91,6 +92,10 @@ public class controller : MonoBehaviour {
         if (imgIdx >= 0 && imgIdx < m_healthUISprites.Length)
         {
             m_healthUI.sprite = m_healthUISprites[m_hp - 1];
+            if (m_hp == 2)
+                m_hpWobbler.m_speedMp = 1.0f;
+            else
+                m_hpWobbler.m_speedMp = 4.0f;
             m_healthUI.enabled = true;
         }
         else if (imgIdx < 0)
@@ -313,6 +318,17 @@ public class controller : MonoBehaviour {
             rigidbody2D.AddForce(hitDir * 20000.0f);
             if (m_camShake) m_camShake.Activate(1.0f, hitDir * 5.0f, new Vector2(10.0f, 20.0f));
             
+        }
+    }
+
+    void PickupGem(Collider2D p_other)
+    {
+        Debug.Log(p_other.gameObject.tag);
+        if (p_other.gameObject.tag == "gem" && !m_dead)
+        {
+            Gem gem = p_other.gameObject.GetComponent<Gem>();
+            ScoreSystem.add(gem.getVal());
+            Instantiate(m_gemFx, transform.position, Quaternion.identity);
         }
     }
 }

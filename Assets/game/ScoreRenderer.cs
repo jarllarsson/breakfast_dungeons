@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class ScoreRenderer : MonoBehaviour 
 {
-    public Text m_scoreText;
+    public Text m_scoreText, m_comboText;
     public deltaScore[] m_scoreFx;
     public AudioSource m_audioSource;
     public AudioClip[] m_scoreSound;
@@ -16,6 +16,7 @@ public class ScoreRenderer : MonoBehaviour
     private Vector3 m_txtSzDefault;
     private int m_comboCount;
     private int m_soundCount;
+    private int m_currentScoreFx = 0;
     bool comboSnd = false;
 	// Use this for initialization
 	void Start () {
@@ -44,14 +45,22 @@ public class ScoreRenderer : MonoBehaviour
             m_scoreText.text = scorestr;
             if (m_comboCount > 0)
             {
-                m_scoreText.text += " (:" + m_comboCount + ")";
+                m_comboText.text = "Combo: " + m_comboCount;
+                m_comboText.enabled = true;
             }
-            
-            foreach(deltaScore dscore in m_scoreFx)
+            else
             {
-                if (!dscore.isRunning())
+                m_comboText.enabled = false;
+            }
+
+            for (int i = 0; i < m_scoreFx.Length;i++ )
+            {
+                int fxidx = (m_currentScoreFx + i)%m_scoreFx.Length;
+                if (!m_scoreFx[fxidx].isRunning())
                 {
-                    dscore.run(score-m_oldScore);
+                    m_scoreFx[fxidx].run(score - m_oldScore);
+                    m_currentScoreFx++;
+                    if (m_currentScoreFx >= m_scoreFx.Length) m_currentScoreFx = 0;
                     break;
                 }
             }
@@ -72,7 +81,7 @@ public class ScoreRenderer : MonoBehaviour
             m_cooldowntick = 0.0f;
         }
         float t=m_cooldowntick/m_cooldownticklim;
-        m_scoreText.rectTransform.localScale = m_txtSzDefault * (1.0f + Mathf.PingPong(t * m_cooldowntick * m_cooldowntick, 0.5f));
+        m_scoreText.rectTransform.localScale = m_txtSzDefault * (1.0f + Mathf.PingPong(t * m_cooldowntick * m_cooldowntick, 0.25f));
         m_scoreText.color = Color.Lerp(m_inactiveCol, m_activeCol, t);
         m_oldScore = score;
 	}

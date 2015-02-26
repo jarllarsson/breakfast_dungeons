@@ -38,18 +38,6 @@ Material:
         second: .699999988
       data:
         first:
-          name: _OffsetTop
-        second: 0
-      data:
-        first:
-          name: _OffsetBottom
-        second: 0
-      data:
-        first:
-          name: _EmissionLM
-        second: 0
-      data:
-        first:
           name: _Stencil
         second: 0
       data:
@@ -72,6 +60,18 @@ Material:
         first:
           name: _ColorMask
         second: 15
+      data:
+        first:
+          name: _OffsetTop
+        second: 0
+      data:
+        first:
+          name: _OffsetBottom
+        second: 0
+      data:
+        first:
+          name: _EmissionLM
+        second: 0
     m_Colors:
       data:
         first:
@@ -83,13 +83,13 @@ Material:
         second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
+          name: _Emission
+        second: {r: 0, g: 0, b: 0, a: 0}
+      data:
+        first:
           name: _Col1
-        second: {r: .886274517, g: .850980401, b: .31764707, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
       data:
         first:
           name: _Col2
-        second: {r: 1, g: .33088237, b: .0441176295, a: .486274511}
-      data:
-        first:
-          name: _Emission
-        second: {r: 0, g: 0, b: 0, a: 0}
+        second: {r: 1, g: .973630846, b: .0441176295, a: 0}

@@ -62,8 +62,8 @@ public class deltaScore : MonoBehaviour
         m_text.gameObject.renderer.enabled = true;
         m_text.gameObject.rigidbody2D.isKinematic = false;
         m_text.transform.localPosition = Vector3.zero;
-        transform.localPosition = m_startPos + new Vector3(Random.Range(-2.0f, 2.0f), Random.Range(-1.0f, 0.0f), 0.0f);
-        m_text.gameObject.rigidbody2D.AddForce(new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 500.0f);
+        transform.localPosition = m_startPos + new Vector3(Random.Range(-0.25f, 0.5f), Random.Range(0.25f, 0.0f), 0.0f);
+        m_text.gameObject.rigidbody2D.AddForce(new Vector2(Random.Range(0.0f, 1.0f), Random.Range(-1.0f, 0.5f)) * 250.0f);
         m_fx.enabled = true;
         m_fx.Play("score_effect",-1,0f);
     }
