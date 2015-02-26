@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class controller : MonoBehaviour {
     public float m_movePower=1.0f;
-    public Vector2 m_tiltMultiplier, m_tiltMax;
+    public Vector3 m_tiltMultiplier, m_tiltMax;
     public LineRenderer m_lineRenderer;
     public SpringJoint2D m_spring;
     public Transform m_face;
@@ -16,10 +16,11 @@ public class controller : MonoBehaviour {
     public float m_flipSpeed = 10.0f;
     private float m_flipT=1.0f;
     private float m_maxAbsVelMp = 1.0f;
-    float startY;
-    float[] startYList;
+    Vector3 startTilt;
+    Vector3[] startTiltList;
     int startYidx = 0;
     float calibrationTime = 2.0f;
+
 
     public Text dbgText;
 
@@ -57,8 +58,8 @@ public class controller : MonoBehaviour {
 	void Start () {
 	    m_dirAnimHash=Animator.StringToHash("facing");
         m_deadStateAnimHash = Animator.StringToHash("dead");
-        startY=Input.acceleration.y;
-        startYList = new float[10];
+        startTilt=Input.acceleration;
+        startTiltList = new Vector3[10];
         m_startPos = transform.position;
         if (m_camShake == null) m_camShake = GameObject.FindGameObjectWithTag("camshaker").GetComponent<shake>();
 	}
@@ -246,21 +247,34 @@ public class controller : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () 
     {
+
+        Vector2 dirInput = Vector2.zero;
+        string ori;
+        if (Input.deviceOrientation == DeviceOrientation.FaceUp)
+            ori = "faceup";
+        else if (Input.deviceOrientation == DeviceOrientation.LandscapeLeft)
+            ori = "LLeft";
+        else if (Input.deviceOrientation == DeviceOrientation.LandscapeRight)
+            ori = "LRight";
+        else
+            ori = "other";
+#if (!UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID))
+        Vector3 origTilt=new Vector3(Input.acceleration.x, Input.acceleration.y, Input.acceleration.z)-startTilt;
+        Vector3 tilt = origTilt;
+        tilt.x *= Mathf.Clamp(m_tiltMultiplier.x * tilt.magnitude, 1.0f, m_tiltMultiplier.x);
+        tilt.y *= Mathf.Clamp(m_tiltMultiplier.y * tilt.magnitude, 1.0f, m_tiltMultiplier.y);
+        tilt.z *= Mathf.Clamp(m_tiltMultiplier.z * tilt.magnitude, 1.0f, m_tiltMultiplier.z);
+        tilt.x = Mathf.Clamp(tilt.x, -m_tiltMax.x, m_tiltMax.y);
+        tilt.y = Mathf.Clamp(tilt.y, -m_tiltMax.y, m_tiltMax.y);
+        tilt.z = Mathf.Clamp(tilt.z, -m_tiltMax.z, m_tiltMax.z);
+        Debug.Log(tilt);
+        dbgText.text="x: "+origTilt.x+" y: "+origTilt.y+" z: "+origTilt.z+" "+ori;
+        dirInput = new Vector2(tilt.x,tilt.y);
+#else
+        dirInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+#endif        
         if (m_handleInput)
         {
-            Vector2 dirInput = Vector2.zero;
-#if (!UNITY_EDITOR && (UNITY_IPHONE || UNITY_ANDROID))
-            Vector3 tilt = new Vector2(Input.acceleration.x, Input.acceleration.y, Input.acceleration.z);
-            tilt.x *= Mathf.Clamp(m_tiltMultiplier.x * tilt.magnitude, 1.0f, m_tiltMultiplier.x);
-            tilt.y *= Mathf.Clamp(m_tiltMultiplier.y * tilt.magnitude, 1.0f, m_tiltMultiplier.y);
-            tilt.x = Mathf.Clamp(tilt.x, -m_tiltMax.x, m_tiltMax.y);
-            tilt.y = Mathf.Clamp(tilt.y, -m_tiltMax.y, m_tiltMax.y);
-            Debug.Log(tilt);
-            dbgText.text=tilt;
-            dirInput = tilt;
-#else
-            dirInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
-#endif
             Debug.DrawLine(transform.position, transform.position + new Vector3(dirInput.x, dirInput.y, 0.0f), Color.white);
             float dirInputSqrMagnitude = dirInput.sqrMagnitude;
             rigidbody2D.AddForce(dirInput * m_movePower);

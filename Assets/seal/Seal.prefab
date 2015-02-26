@@ -246,7 +246,7 @@ AudioSource:
   serializedVersion: 3
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: .224999994
+  m_Volume: .125
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -338,8 +338,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_movePower: 500
-  m_tiltMultiplier: {x: 30, y: 32}
-  m_tiltMax: {x: 1.20000005, y: 1.5}
+  m_tiltMultiplier: {x: 30, y: 32, z: 32}
+  m_tiltMax: {x: 1.20000005, y: 1.5, z: 1.5}
   m_lineRenderer: {fileID: 12000000}
   m_spring: {fileID: 23100000}
   m_face: {fileID: 400004}
@@ -349,6 +349,7 @@ MonoBehaviour:
   m_paddle2: {fileID: 11400004}
   m_faceAnimation: {fileID: 9500000}
   m_flipSpeed: 5
+  dbgText: {fileID: 0}
   m_outsideHDist: {x: 20, y: 15}
   m_normalDrag: 5
   m_outsideDrag: 20
@@ -404,7 +405,7 @@ LineRenderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 2100000, guid: 54c4bb014b316034591004fd4c4ef2c7, type: 2}
+  - {fileID: 2100000, guid: d90e49147b5e2af4e93bd222d9fbb476, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -414,10 +415,10 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: -4.69999981, z: 1}
+  - {x: 0, y: 0, z: 0}
   m_Parameters:
-    startWidth: .200000003
-    endWidth: .200000003
+    startWidth: .400000006
+    endWidth: .400000006
     m_StartColor:
       serializedVersion: 2
       rgba: 4294967295
