@@ -4407,6 +4407,7 @@ GameObject:
   - 224: {fileID: 764346148}
   - 223: {fileID: 764346150}
   - 114: {fileID: 764346149}
+  - 114: {fileID: 764346151}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4466,6 +4467,19 @@ Canvas:
   m_ReceivesEvents: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!114 &764346151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 764346147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -990768443, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Resolution: {x: 800, y: 600}
+  m_MatchWidthOrHeight: 0
 --- !u!1 &766128585
 GameObject:
   m_ObjectHideFlags: 0
@@ -8748,7 +8762,7 @@ Transform:
   m_Children:
   - {fileID: 2099572717}
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 18
 --- !u!82 &1600116431
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9531,7 +9545,7 @@ Transform:
   m_Children:
   - {fileID: 203267683}
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 17
 --- !u!1 &1753221555
 GameObject:
   m_ObjectHideFlags: 0
