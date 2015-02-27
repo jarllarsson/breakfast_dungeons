@@ -21,6 +21,7 @@ public class ScoreRenderer : MonoBehaviour
     bool comboSnd = false;
     public controller m_player;
     int m_oldBallCombo = -1;
+    public Transform m_leftTopEdge3d;
 
 	// Use this for initialization
 	void Start () {
@@ -69,6 +70,7 @@ public class ScoreRenderer : MonoBehaviour
                 int fxidx = (m_currentScoreFx + i)%m_scoreFx.Length;
                 if (!m_scoreFx[fxidx].isRunning())
                 {
+
                     m_scoreFx[fxidx].run(score - m_oldScore);
                     m_currentScoreFx++;
                     if (m_currentScoreFx >= m_scoreFx.Length) m_currentScoreFx = 0;
@@ -102,7 +104,22 @@ public class ScoreRenderer : MonoBehaviour
             {
                 m_scoreText.text = score.ToString();
                 ScoreSystem.add(m_comboCount);
+                score = ScoreSystem.getScore();
                 m_audioSource.PlayOneShot(m_comboSound);
+
+                for (int i = 0; i < m_scoreFx.Length; i++)
+                {
+                    int fxidx = (m_currentScoreFx + i) % m_scoreFx.Length;
+                    if (!m_scoreFx[fxidx].isRunning())
+                    {
+                        m_scoreFx[fxidx].run(m_comboCount, m_leftTopEdge3d.position);
+                        m_currentScoreFx++;
+                        if (m_currentScoreFx >= m_scoreFx.Length) m_currentScoreFx = 0;
+                        break;
+                    }
+                }
+                m_comboTextGem.enabled = false;
+                m_comboGem.enabled = false;
                 m_comboCount = 0;
                 comboSnd = true;
             }

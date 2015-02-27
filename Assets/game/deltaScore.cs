@@ -68,4 +68,19 @@ public class deltaScore : MonoBehaviour
         m_fx.Play("score_effect",-1,0f);
     }
 
+    public void run(int m_score,Vector3 p_pos)
+    {
+        m_text.characterSize = m_baseCharSz * 4.0f;
+        m_text.text = m_score < 0 ? "-" : "+" + m_score.ToString();
+        m_ticker = -0.1f;
+        m_run = true;
+        m_text.gameObject.renderer.enabled = true;
+        m_text.gameObject.rigidbody2D.isKinematic = false;
+        m_text.transform.localPosition = Vector3.zero;
+        transform.position = p_pos + new Vector3(Random.Range(-0.25f, 0.5f), Random.Range(0.25f, 0.0f), 0.0f);
+        m_text.gameObject.rigidbody2D.AddForce(new Vector2(Random.Range(0.0f, 1.0f), Random.Range(-1.0f, 0.5f)) * 250.0f);
+        m_fx.enabled = true;
+        m_fx.Play("score_effect", -1, 0f);
+    }
+
 }
