@@ -59,7 +59,7 @@ public class controller : MonoBehaviour {
     private float m_ballComboCooldownTick;
     public Image m_healthUI;
     public Sprite[] m_healthUISprites;
-
+    public bool m_weaponActivate;
 	void Start () {
 	    m_dirAnimHash=Animator.StringToHash("facing");
         m_deadStateAnimHash = Animator.StringToHash("dead");
@@ -291,7 +291,12 @@ public class controller : MonoBehaviour {
         if (Input.GetAxis("Jump") > 0.0f)
             m_isRushing = true;
         else
+        {
+            if (m_isRushing)
+                m_weaponActivate = true;
             m_isRushing = false;
+
+        }
         if (m_handleInput)
         {
             Debug.DrawLine(transform.position, transform.position + new Vector3(dirInput.x, dirInput.y, 0.0f), Color.white);
@@ -321,6 +326,11 @@ public class controller : MonoBehaviour {
     public bool isDead()
     {
         return m_dead;
+    }
+
+    public Vector2 GetMoveDir()
+    {
+        return GetComponent<Rigidbody2D>().velocity.normalized;
     }
 
     bool HandlePain(Collider2D p_other)
