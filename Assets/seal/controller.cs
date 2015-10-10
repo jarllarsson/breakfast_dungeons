@@ -3,7 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class controller : MonoBehaviour {
-    public float m_movePower=1.0f;
+    public float m_movePower = 1.0f;
+    public float m_rushPower = 2.0f;
     public Vector3 m_tiltMultiplier, m_tiltMax;
     public LineRenderer m_lineRenderer;
     public SpringJoint2D m_spring;
@@ -20,6 +21,9 @@ public class controller : MonoBehaviour {
     Vector3[] startTiltList;
     int startYidx = 0;
     float calibrationTime = 2.0f;
+
+
+    public bool m_isRushing = false;
 
 
     public Text dbgText;
@@ -283,11 +287,20 @@ public class controller : MonoBehaviour {
 #else
         dirInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
 #endif        
+
+        if (Input.GetAxis("Jump") > 0.0f)
+            m_isRushing = true;
+        else
+            m_isRushing = false;
         if (m_handleInput)
         {
             Debug.DrawLine(transform.position, transform.position + new Vector3(dirInput.x, dirInput.y, 0.0f), Color.white);
             float dirInputSqrMagnitude = dirInput.sqrMagnitude;
-            GetComponent<Rigidbody2D>().AddForce(dirInput * m_movePower);
+            //GetComponent<Rigidbody2D>().AddForce(dirInput * m_movePower);
+            if (!m_isRushing)
+                GetComponent<Rigidbody2D>().velocity = dirInput * m_movePower;
+            else
+                GetComponent<Rigidbody2D>().velocity = dirInput * m_rushPower;
             m_maxAbsVelMp *= 0.95f;
         }
 
