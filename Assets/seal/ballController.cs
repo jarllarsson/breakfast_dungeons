@@ -19,18 +19,18 @@ public class ballController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log(rigidbody2D.velocity.magnitude);
+        Debug.Log(GetComponent<Rigidbody2D>().velocity.magnitude);
 	}
 
     void FixedUpdate()
     {
-        if (rigidbody2D.velocity.magnitude > m_boostMagnitudeLim)
+        if (GetComponent<Rigidbody2D>().velocity.magnitude > m_boostMagnitudeLim)
         {
             if (m_extrapowerCooldownTick >= m_extrapowerCooldownTime &&
                 m_extrapowerApplyTick > 0.0f)
             {
                 m_currentBoost += m_extrapowerInc * Time.deltaTime;
-                rigidbody2D.AddForce(rigidbody2D.velocity.normalized * m_currentBoost);
+                GetComponent<Rigidbody2D>().AddForce(GetComponent<Rigidbody2D>().velocity.normalized * m_currentBoost);
                 m_extrapowerApplyTick -= Time.deltaTime;
             }
             if (m_extrapowerApplyTick<=0.0f)

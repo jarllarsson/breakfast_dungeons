@@ -16,7 +16,7 @@ public class Gem : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
     {
-        rigidbody2D.AddForce(new Vector2(Random.Range(-200.0f, 200.0f), Random.Range(-200.0f, 200.0f)));
+        GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-200.0f, 200.0f), Random.Range(-200.0f, 200.0f)));
         int maxVal=m_gemSprites.Length;
         if (m_val>maxVal)
         {

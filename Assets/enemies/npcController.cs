@@ -108,7 +108,7 @@ public class npcController : MonoBehaviour
         m_ownDt += Time.deltaTime;
         if (m_ownDt > 0.1f && !m_isAttacking)
         {
-            float velocity = rigidbody2D.velocity.magnitude;
+            float velocity = GetComponent<Rigidbody2D>().velocity.magnitude;
             if (m_onFire && !m_dying)
             {
                 m_burnClock -= m_ownDt;
@@ -135,8 +135,8 @@ public class npcController : MonoBehaviour
                         if (m_gib)
                         {
                             Transform gib = Instantiate(m_gib, transform.position + new Vector3(((float)i - ((float)gibs * 0.5f)) * 0.1f, 1.0f, 0.0f), Quaternion.identity) as Transform;
-                            gib.rigidbody2D.AddForce(new Vector2(Random.Range(-200.0f, 200.0f), Random.Range(200.0f, 700.0f)));
-                            gib.rigidbody2D.AddTorque(Random.Range(-20.0f, 20.0f));
+                            gib.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-200.0f, 200.0f), Random.Range(200.0f, 700.0f)));
+                            gib.GetComponent<Rigidbody2D>().AddTorque(Random.Range(-20.0f, 20.0f));
                         }
                     }
                 }
@@ -186,7 +186,7 @@ public class npcController : MonoBehaviour
 
                 m_npcBaseAnim.speed = Mathf.Min(m_animSpdMax,velocity*m_velocityAffectOnAnimSpd);
 
-                if (Mathf.Abs(rigidbody2D.velocity.x) > 0.01f)
+                if (Mathf.Abs(GetComponent<Rigidbody2D>().velocity.x) > 0.01f)
                     m_npcBaseAnim.SetInteger(m_animActionState, 1); // walk
                 else
                     m_npcBaseAnim.SetInteger(m_animActionState, 0); // idle
@@ -242,7 +242,7 @@ public class npcController : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate () 
     {
-        if (m_isMoving && !m_isAttacking) rigidbody2D.AddForce(m_dir * m_moveSpeed); // move
+        if (m_isMoving && !m_isAttacking) GetComponent<Rigidbody2D>().AddForce(m_dir * m_moveSpeed); // move
 	}
 
     public void kill(DeathCause p_cause, float p_deathClock = 0.0f)
@@ -259,12 +259,12 @@ public class npcController : MonoBehaviour
                 if (p_cause != DeathCause.ZAPPED)
                 {
                     if (m_bloodFx) 
-                        Instantiate(m_bloodFx, transform.position + Vector3.up * collider2D.bounds.extents.y * 0.5f, Quaternion.identity);
+                        Instantiate(m_bloodFx, transform.position + Vector3.up * GetComponent<Collider2D>().bounds.extents.y * 0.5f, Quaternion.identity);
                 }
                 else
                 {   
                     if (m_bloodFxZap) 
-                        Instantiate(m_bloodFxZap, transform.position + Vector3.up * collider2D.bounds.extents.y * 0.5f, Quaternion.identity);
+                        Instantiate(m_bloodFxZap, transform.position + Vector3.up * GetComponent<Collider2D>().bounds.extents.y * 0.5f, Quaternion.identity);
                 }
             }
             m_dying = true;
@@ -279,7 +279,7 @@ public class npcController : MonoBehaviour
             m_deathClock = p_deathClock;
             m_deathClockStart = p_deathClock;
             m_totalCurrent--;
-            Instantiate(m_bloodFx, transform.position + Vector3.up * collider2D.bounds.extents.y * 0.5f, Quaternion.identity);
+            Instantiate(m_bloodFx, transform.position + Vector3.up * GetComponent<Collider2D>().bounds.extents.y * 0.5f, Quaternion.identity);
             m_dying = true;
         }
     }
@@ -312,13 +312,13 @@ public class npcController : MonoBehaviour
             if (ballScript)
                 velocity = ballScript.m_smoothVelocity;
             else
-                velocity = coll.rigidbody2D.velocity.magnitude;
+                velocity = coll.GetComponent<Rigidbody2D>().velocity.magnitude;
 
             if (velocity >= m_velocityOnBallToKillMe)
             {
                 Vector2 pos=collision.contacts[0].point;
-                rigidbody2D.fixedAngle = false;
-                rigidbody2D.AddForceAtPosition(coll.rigidbody2D.velocity.normalized * velocity * 2000.0f, pos);
+                GetComponent<Rigidbody2D>().fixedAngle = false;
+                GetComponent<Rigidbody2D>().AddForceAtPosition(coll.GetComponent<Rigidbody2D>().velocity.normalized * velocity * 2000.0f, pos);
                 if (m_hitSparks) Instantiate(m_hitSparks, new Vector3(pos.x,pos.y,transform.position.z), Quaternion.identity);
                 if (!m_soundSource.isPlaying) m_soundSource.PlayOneShot(m_hitSounds[Random.Range(0, m_hitSounds.Length)]);
                 if (m_player) m_player.registerEnemyHurtbyBall();
@@ -328,10 +328,10 @@ public class npcController : MonoBehaviour
                 Gem gemscript = gem.GetComponent<Gem>();
                 gemscript.m_val = Mathf.Max(1, m_comboOnHit);
                 kill(DeathCause.SMASHED, 0.5f);               
-                if (m_camShake) m_camShake.Activate(0.5f, coll.rigidbody2D.velocity.normalized * velocity * 0.1f, new Vector2(velocity, velocity));
+                if (m_camShake) m_camShake.Activate(0.5f, coll.GetComponent<Rigidbody2D>().velocity.normalized * velocity * 0.1f, new Vector2(velocity, velocity));
             }
         }
-        else if (coll.gameObject.tag == "obstruction" && coll.rigidbody2D.velocity.y<-0.5f)
+        else if (coll.gameObject.tag == "obstruction" && coll.GetComponent<Rigidbody2D>().velocity.y<-0.5f)
         {
             kill(DeathCause.CRUSH);
         }

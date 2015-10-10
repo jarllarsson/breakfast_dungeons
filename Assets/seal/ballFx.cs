@@ -12,7 +12,7 @@ public class ballFx : MonoBehaviour {
 	void Start () 
     {
         m_smoothVelocityList = new float[20];
-        rigidbody2D.AddTorque(1.0f);
+        GetComponent<Rigidbody2D>().AddTorque(1.0f);
         m_colMatId=Shader.PropertyToID("_TintColor");
 	}
 	
@@ -33,7 +33,7 @@ public class ballFx : MonoBehaviour {
 
     void FixedUpdate()
     {
-        m_smoothVelocityList[m_currentIdx] = rigidbody2D.velocity.magnitude;
+        m_smoothVelocityList[m_currentIdx] = GetComponent<Rigidbody2D>().velocity.magnitude;
         m_currentIdx++;
         if (m_currentIdx >= m_smoothVelocityList.Length)
             m_currentIdx = 0;

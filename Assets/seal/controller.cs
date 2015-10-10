@@ -131,7 +131,7 @@ public class controller : MonoBehaviour {
         if (!m_dead)
         {
             // anims
-            Vector2 vel = rigidbody2D.velocity;
+            Vector2 vel = GetComponent<Rigidbody2D>().velocity;
             float velMagnitude = vel.magnitude;
             if (Mathf.Abs(velMagnitude) > m_maxAbsVelMp) m_maxAbsVelMp = Mathf.Abs(velMagnitude);
             float dirSign = 1.0f;
@@ -173,17 +173,17 @@ public class controller : MonoBehaviour {
             if (deltaPosFromStart.x > -m_outsideHDist.x && deltaPosFromStart.x < m_outsideHDist.x &&
                 deltaPosFromStart.y > -m_outsideHDist.y && deltaPosFromStart.y < m_outsideHDist.y)
             {
-                rigidbody2D.drag = m_normalDrag;
+                GetComponent<Rigidbody2D>().drag = m_normalDrag;
             }
             else
             {
                 if (deltaPosFromStart.x > -m_outsideHDist.x - 8.0f && deltaPosFromStart.x < m_outsideHDist.x + 8.0f &&
                 deltaPosFromStart.y > -m_outsideHDist.y - 8.0f && deltaPosFromStart.y < m_outsideHDist.y + 8.0f)
                 {
-                    rigidbody2D.drag = m_outsideDrag;
+                    GetComponent<Rigidbody2D>().drag = m_outsideDrag;
                 }
                 else
-                    rigidbody2D.drag = m_veryOutsideDrag;
+                    GetComponent<Rigidbody2D>().drag = m_veryOutsideDrag;
             }
         }
 
@@ -196,17 +196,17 @@ public class controller : MonoBehaviour {
         {
             if (m_invulnTick < m_invulnTime * 0.5f && m_invulnTick > m_invulnTime * 0.48f && !m_soundSource.isPlaying)
                 m_soundSource.PlayOneShot(m_hurtsound);
-            m_face.renderer.enabled = !m_face.renderer.enabled;
-            m_paddle1.renderer.enabled = !m_paddle1.renderer.enabled;
-            m_paddle2.renderer.enabled = !m_paddle2.renderer.enabled;
-            m_tail.renderer.enabled = !m_tail.renderer.enabled;
+            m_face.GetComponent<Renderer>().enabled = !m_face.GetComponent<Renderer>().enabled;
+            m_paddle1.GetComponent<Renderer>().enabled = !m_paddle1.GetComponent<Renderer>().enabled;
+            m_paddle2.GetComponent<Renderer>().enabled = !m_paddle2.GetComponent<Renderer>().enabled;
+            m_tail.GetComponent<Renderer>().enabled = !m_tail.GetComponent<Renderer>().enabled;
         }
         else if (m_invulnTick>-10000.0f)
         {
-            m_face.renderer.enabled = true;
-            m_paddle1.renderer.enabled = true;
-            m_paddle2.renderer.enabled = true;
-            m_tail.renderer.enabled = true;
+            m_face.GetComponent<Renderer>().enabled = true;
+            m_paddle1.GetComponent<Renderer>().enabled = true;
+            m_paddle2.GetComponent<Renderer>().enabled = true;
+            m_tail.GetComponent<Renderer>().enabled = true;
             m_invulnTick = -20000.0f;
         }
 
@@ -287,7 +287,7 @@ public class controller : MonoBehaviour {
         {
             Debug.DrawLine(transform.position, transform.position + new Vector3(dirInput.x, dirInput.y, 0.0f), Color.white);
             float dirInputSqrMagnitude = dirInput.sqrMagnitude;
-            rigidbody2D.AddForce(dirInput * m_movePower);
+            GetComponent<Rigidbody2D>().AddForce(dirInput * m_movePower);
             m_maxAbsVelMp *= 0.95f;
         }
 
@@ -322,7 +322,7 @@ public class controller : MonoBehaviour {
             Instantiate(m_hitFx, transform.position, Quaternion.identity);
             m_invulnTick = m_invulnTime;
             Vector3 hitDir = (transform.position - p_other.transform.position).normalized;
-            rigidbody2D.AddForce(hitDir * 20000.0f);
+            GetComponent<Rigidbody2D>().AddForce(hitDir * 20000.0f);
             if (m_camShake) m_camShake.Activate(1.0f, hitDir * 5.0f, new Vector2(10.0f, 20.0f));
             return true;
         }
