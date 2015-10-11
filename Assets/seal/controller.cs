@@ -126,12 +126,15 @@ public class controller : MonoBehaviour {
             m_ballComboCount = 0;         
         }
 
-        Vector3 myLocalConnectorPoint = transform.InverseTransformPoint(m_springConnector.position);
-        m_spring.anchor = new Vector2(myLocalConnectorPoint.x, myLocalConnectorPoint.y);
-        m_lineRenderer.SetPosition(0, m_springConnector.position);
-        m_lineRenderer.SetPosition(1, m_spring.connectedBody.transform.position);
-        float dist = (m_springConnector.position - m_spring.connectedBody.transform.position).magnitude;
-        m_lineRenderer.materials[0].mainTextureScale = new Vector2(dist/4.0f, 1.0f);
+        if (m_springConnector)
+        {
+            Vector3 myLocalConnectorPoint = transform.InverseTransformPoint(m_springConnector.position);
+            m_spring.anchor = new Vector2(myLocalConnectorPoint.x, myLocalConnectorPoint.y);
+            m_lineRenderer.SetPosition(0, m_springConnector.position);
+            m_lineRenderer.SetPosition(1, m_spring.connectedBody.transform.position);
+            float dist = (m_springConnector.position - m_spring.connectedBody.transform.position).magnitude;
+            m_lineRenderer.materials[0].mainTextureScale = new Vector2(dist / 4.0f, 1.0f);
+        }
         if (!m_dead)
         {
             // anims
@@ -141,35 +144,44 @@ public class controller : MonoBehaviour {
             float dirSign = 1.0f;
             if (velMagnitude > 5.0f)
             {
-                m_paddle1.m_speedMp = 1.0f + (velMagnitude - 0.5f) * 0.05f;
-                m_paddle2.m_speedMp = 1.0f + (velMagnitude - 0.5f) * 0.05f;
-                if (vel.y > 2.0f)
-                    m_faceAnimation.SetInteger(m_dirAnimHash, 1); // backface
-                else
-                    m_faceAnimation.SetInteger(m_dirAnimHash, 0); // frontface
-                float speedMp = Mathf.Max(1.0f, m_maxAbsVelMp);
-                if (vel.x > 0.0f)
+                if (m_paddle1) m_paddle1.m_speedMp = 1.0f + (velMagnitude - 0.5f) * 0.05f;
+                if (m_paddle2) m_paddle2.m_speedMp = 1.0f + (velMagnitude - 0.5f) * 0.05f;
+                if (m_faceAnimation)
                 {
-                    m_flipT = Mathf.Lerp(m_flipT, -1.0f, -(m_flipT - 2.0f) * m_flipSpeed * speedMp * Time.deltaTime);
-                    m_face.localScale = new Vector3(blorp(m_flipT, -vel.x), 1.0f, 1.0f);
-                    dirSign = m_face.localScale.x;
+                    if (vel.y > 2.0f)
+                        m_faceAnimation.SetInteger(m_dirAnimHash, 1); // backface
+                    else
+                        m_faceAnimation.SetInteger(m_dirAnimHash, 0); // frontface
                 }
-                else
+                float speedMp = Mathf.Max(1.0f, m_maxAbsVelMp);
+                if (m_face)
                 {
-                    m_flipT = Mathf.Lerp(m_flipT, 1.0f, (m_flipT + 2.0f) * m_flipSpeed * speedMp * Time.deltaTime);
-                    m_face.localScale = new Vector3(blorp(m_flipT, -vel.x), 1.0f, 1.0f);
+                    if (vel.x > 0.0f)
+                    {
+                        m_flipT = Mathf.Lerp(m_flipT, -1.0f, -(m_flipT - 2.0f) * m_flipSpeed * speedMp * Time.deltaTime);
+                        m_face.localScale = new Vector3(blorp(m_flipT, -vel.x), 1.0f, 1.0f);
+                        dirSign = m_face.localScale.x;
+                    }
+                    else
+                    {
+                        m_flipT = Mathf.Lerp(m_flipT, 1.0f, (m_flipT + 2.0f) * m_flipSpeed * speedMp * Time.deltaTime);
+                        m_face.localScale = new Vector3(blorp(m_flipT, -vel.x), 1.0f, 1.0f);
+                    }
                 }
                 //
             }
             else
             {
-                if (m_face.localScale.x < 0.0f)
-                    m_face.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-                else
-                    m_face.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                dirSign = m_face.localScale.x;
+                if (m_face)
+                {
+                    if (m_face.localScale.x < 0.0f)
+                        m_face.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+                    else
+                        m_face.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    dirSign = m_face.localScale.x;
+                }
             }
-            if (velMagnitude > 0.5f)
+            if (velMagnitude > 0.5f && m_tail)
                 m_tail.localRotation = Quaternion.Euler(0.0f, 0.0f, Mathf.Rad2Deg * Mathf.Atan2(-vel.y, -vel.x * dirSign));
 
             // if outside
@@ -200,17 +212,17 @@ public class controller : MonoBehaviour {
         {
             if (m_invulnTick < m_invulnTime * 0.5f && m_invulnTick > m_invulnTime * 0.48f && !m_soundSource.isPlaying)
                 m_soundSource.PlayOneShot(m_hurtsound);
-            m_face.GetComponent<Renderer>().enabled = !m_face.GetComponent<Renderer>().enabled;
-            m_paddle1.GetComponent<Renderer>().enabled = !m_paddle1.GetComponent<Renderer>().enabled;
-            m_paddle2.GetComponent<Renderer>().enabled = !m_paddle2.GetComponent<Renderer>().enabled;
-            m_tail.GetComponent<Renderer>().enabled = !m_tail.GetComponent<Renderer>().enabled;
+            if (m_face) m_face.GetComponent<Renderer>().enabled = !m_face.GetComponent<Renderer>().enabled;
+            if (m_paddle1) m_paddle1.GetComponent<Renderer>().enabled = !m_paddle1.GetComponent<Renderer>().enabled;
+            if (m_paddle2) m_paddle2.GetComponent<Renderer>().enabled = !m_paddle2.GetComponent<Renderer>().enabled;
+            if (m_tail) m_tail.GetComponent<Renderer>().enabled = !m_tail.GetComponent<Renderer>().enabled;
         }
         else if (m_invulnTick>-10000.0f)
         {
-            m_face.GetComponent<Renderer>().enabled = true;
-            m_paddle1.GetComponent<Renderer>().enabled = true;
-            m_paddle2.GetComponent<Renderer>().enabled = true;
-            m_tail.GetComponent<Renderer>().enabled = true;
+            if (m_face) m_face.GetComponent<Renderer>().enabled = true;
+            if (m_paddle1) m_paddle1.GetComponent<Renderer>().enabled = true;
+            if (m_paddle2) m_paddle2.GetComponent<Renderer>().enabled = true;
+            if (m_tail) m_tail.GetComponent<Renderer>().enabled = true;
             m_invulnTick = -20000.0f;
         }
 
@@ -226,7 +238,7 @@ public class controller : MonoBehaviour {
         {
             m_handleInput = false;
             m_spriteRendererHead.sprite = m_deadHeadSprite;
-            m_faceAnimation.SetBool(m_deadStateAnimHash, true);
+            if (m_faceAnimation) m_faceAnimation.SetBool(m_deadStateAnimHash, true);
             m_paddle1.enabled = false;
             m_paddle2.enabled = false;
             m_dead = true;
